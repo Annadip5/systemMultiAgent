@@ -1,28 +1,28 @@
 package org.system.view;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
+/*import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;*/
 
-public class SimulatorView extends BorderPane {
-    private Button startButton;
-    private Button stopButton;
+public class SimulatorView /*extends BorderPane*/ {
+    /*private Button startButton;
+    private Button stopButton;*/
 
     public SimulatorView() {
         initializeComponents();
     }
 
     private void initializeComponents() {
-        startButton = new Button("Start Simulation");
+        /*startButton = new Button("Start Simulation");
         stopButton = new Button("Stop Simulation");
 
         this.setTop(startButton);
-        this.setBottom(stopButton);
+        this.setBottom(stopButton);*/
     }
 
-    public Button getStartButton() {
+    /*public Button getStartButton() {
         return startButton;
     }
 
     public Button getStopButton() {
         return stopButton;
-    }
+    }*/
 }

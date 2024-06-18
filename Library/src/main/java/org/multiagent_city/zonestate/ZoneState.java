@@ -1,10 +1,12 @@
-package org.multiagent_city.zoneState;
+package org.multiagent_city.zonestate;
+
+import org.multiagent_city.environment.Zone;
 
 public abstract class ZoneState {
     protected Zone zone;
     protected int duration;
 
-    public ZoneState(int duration,Zone zone) {
+    public ZoneState(int duration, Zone zone) {
         this.duration = duration;
         this.zone = zone;
     }

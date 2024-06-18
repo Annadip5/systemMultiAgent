@@ -1,4 +1,6 @@
-package org.multiagent_city.zoneState;
+package org.multiagent_city.zonestate;
+
+import org.multiagent_city.environment.Zone;
 
 public class LockedState extends ZoneState{
     public LockedState(int duration, Zone zone) {
@@ -7,7 +9,7 @@ public class LockedState extends ZoneState{
     @Override
     public void nextState() {
         if ( (this.zone.getNature() instanceof Tree) || (this.zone.getNature() instanceof Bush) ){
-            PruningState state = new PruningState(this.zone);
+            PruningState state = new PruningState(this.duration, this.zone);
             this.zone.setZoneState(state);
         } else{
             InConstructionState state = new InConstructionState(this.duration, this.zone);

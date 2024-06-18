@@ -1,4 +1,6 @@
-package org.multiagent_city.zoneState;
+package org.multiagent_city.zonestate;
+
+import org.multiagent_city.environment.Zone;
 
 public class PruningState extends ZoneState{
     public PruningState(int duration, Zone zone) {

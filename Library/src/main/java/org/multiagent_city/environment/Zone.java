@@ -1,24 +1,27 @@
 package org.multiagent_city.environment;
 
+import org.multiagent_city.zonestate.EmptyState;
+import org.multiagent_city.zonestate.ZoneState;
+
 public class Zone {
-    private ZoneState state;
+    private ZoneState zoneState;
     private Infrastructure infrastructure;
     private Nature nature;
 
     public Zone() {
-        this.state = new EmptyState();
+        this.zoneState = new EmptyState(this);
     }
 
     public Zone(Nature nature) {
-        this.state = new EmptyState();
+        this.zoneState = new EmptyState(this);
         this.nature = nature;
     }
 
-    public ZoneState getState() {
-        return state;
+    public ZoneState getZoneState() {
+        return zoneState;
     }
-    public void setState(ZoneState state) {
-        this.state = state;
+    public void setZoneState(ZoneState zoneState) {
+        this.zoneState = zoneState;
     }
 
     public Infrastructure getInfrastructure() {

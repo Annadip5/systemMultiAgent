@@ -1,8 +1,8 @@
-package org.system.controller;
+package org.multiagent_city.controller;
 
 /*import javafx.event.ActionEvent;
 import javafx.event.EventHandler;*/
-import org.system.view.SimulatorView;
+import org.multiagent_city.view.SimulatorView;
 
 public class SimulatorController {
     private SimulatorView view;

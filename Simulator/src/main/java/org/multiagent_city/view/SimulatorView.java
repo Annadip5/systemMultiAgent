@@ -1,4 +1,4 @@
-package org.system.view;
+package org.multiagent_city.view;
 /*import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;*/
 

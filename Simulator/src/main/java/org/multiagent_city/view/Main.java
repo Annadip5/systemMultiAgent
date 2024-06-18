@@ -1,6 +1,6 @@
-package org.system.view;
-import org.system.LibraryClass;
-import org.system.Test;
+package org.multiagent_city.view;
+import org.multiagent_city.LibraryClass;
+import org.multiagent_city.Test;
 /*
 import javafx.application.Application;
 //import javafx.scene.Scene;

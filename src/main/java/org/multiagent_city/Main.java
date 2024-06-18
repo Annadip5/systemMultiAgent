@@ -1,4 +1,4 @@
-package org.system;
+package org.multiagent_city;
 
 public class Main {
     public static void main(String[] args) {

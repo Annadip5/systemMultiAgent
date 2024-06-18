@@ -1,4 +1,4 @@
-package org.system;
+package org.multiagent_city;
 
 import com.badlogic.gdx.Game;
 

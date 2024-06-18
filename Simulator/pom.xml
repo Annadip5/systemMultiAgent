@@ -80,7 +80,7 @@
                             <archive>
                                 <manifest>
                                     <addClasspath>true</addClasspath>
-                                    <mainClass>org.multiagent_city.DesktopLaucher</mainClass>
+                                    <mainClass>org.multiagent_city.DesktopLauncher</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>

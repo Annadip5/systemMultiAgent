@@ -1,7 +1,9 @@
 package org.multiagent_city.environment;
 
+import org.multiagent_city.agents.Infrastructure;
 import org.multiagent_city.zonestate.EmptyState;
 import org.multiagent_city.zonestate.ZoneState;
+import org.multiagent_city.nature.Nature;
 
 public class Zone {
     private ZoneState zoneState;

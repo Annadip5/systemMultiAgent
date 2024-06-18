@@ -1,6 +1,8 @@
 package org.multiagent_city.zonestate;
 
 import org.multiagent_city.environment.Zone;
+import org.multiagent_city.nature.nature_elements.Bush;
+import org.multiagent_city.nature.nature_elements.Tree;
 
 public class LockedState extends ZoneState{
     public LockedState(int duration, Zone zone) {

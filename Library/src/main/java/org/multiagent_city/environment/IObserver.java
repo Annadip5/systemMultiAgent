@@ -1,5 +1,5 @@
 package org.multiagent_city.environment;
 
-public interface Observer {
+public interface IObserver {
     void update(Zone[][] zones);
 }

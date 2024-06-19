@@ -5,15 +5,15 @@ import org.multiagent_city.utils.strategy.IStrategy;
 
 public class Map extends Observable{
     private static Map instance = null;
-    private Zone[] zones;
+    private Zone[][] zones;
     private Position townHallPosition;
     private Map() {
     }
 
-    public Zone[] getZones() {
+    public Zone[][] getZones() {
         return zones;
     }
-    public void setZones(Zone[] zones) {
+    public void setZones(Zone[][] zones) {
         this.zones = zones;
     }
 
@@ -37,8 +37,11 @@ public class Map extends Observable{
     }
 
     public boolean isZoneOccupied(Position position){
-        // TODO
-        return false;
+        return this.zones[position.getX()][position.getY()].isOccupied();
+    }
+
+    public boolean isZoneBuildable(Position position){
+        return this.zones[position.getX()][position.getY()].isBuildable();
     }
 
     public void setStrategy(IStrategy strategy){

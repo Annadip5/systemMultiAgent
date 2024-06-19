@@ -47,6 +47,10 @@ public class SimulatorController {
     }
 
     public Color getNatureColorFromZone(int x, int y) {
+        Position townHallPos = this.simulator.getMap().getTownHallPosition();
+        if (townHallPos.isEqual(x, y)) {
+            return new Color(255,0,0);
+        }
         return this.simulator.getMap().getZones()[x][y].getNature().getColor();
     }
     public void updateView(){

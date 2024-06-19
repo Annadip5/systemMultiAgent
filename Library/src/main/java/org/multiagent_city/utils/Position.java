@@ -29,4 +29,11 @@ public class Position {
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
+
+    public boolean isEqual(int x, int y) {
+        return this.x == x && this.y == y;
+    }
+    public boolean isEqual(Position position) {
+        return this.x == position.x && this.y == position.y;
+    }
 }

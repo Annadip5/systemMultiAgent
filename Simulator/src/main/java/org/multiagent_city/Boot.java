@@ -23,14 +23,14 @@ public class Boot extends Game {
     @Override
     public void create() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, mapWidth * cellSize, mapHeight * cellSize);
+        camera.setToOrtho(true, mapWidth * cellSize, mapHeight * cellSize);
         shapeRenderer = new ShapeRenderer();
 
         Simulator simulator = new Simulator();
         SimulatorView simulatorView = new SimulatorView();
         SimulatorController simulatorController = new SimulatorController(simulatorView, simulator);
         simulatorController.setMapSize(mapWidth,mapHeight);
-        simulatorController.setTownHallPosition(3,4);
+        simulatorController.setTownHallPosition(15,29);
 
         // Create noise map for nature
         FastNoiseLite noise = new FastNoiseLite(1);

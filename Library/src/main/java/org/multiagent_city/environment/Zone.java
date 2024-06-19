@@ -52,4 +52,9 @@ public class Zone {
     public void deleteInfrastructure() {
         this.infrastructure = null;
     }
+
+    @Override
+    public String toString() {
+        return  nature.getName().substring(0,1) ;
+    }
 }

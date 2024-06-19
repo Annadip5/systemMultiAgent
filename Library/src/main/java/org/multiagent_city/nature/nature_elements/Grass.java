@@ -4,5 +4,6 @@ import org.multiagent_city.nature.Nature;
 
 public class Grass extends Nature {
     public Grass() {
+        super("Grass");
     }
 }

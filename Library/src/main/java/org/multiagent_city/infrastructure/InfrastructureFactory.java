@@ -1,7 +1,6 @@
 package org.multiagent_city.infrastructure;
-import org.multiagent_city.agents.Infrastructure;
-import org.multiagent_city.enumerations.Color;
-import org.multiagent_city.enumerations.Texture;
+import org.multiagent_city.utils.Color;
+import org.multiagent_city.utils.Texture;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,6 +2,8 @@ package org.multiagent_city.environment;
 
 import org.multiagent_city.nature.Nature;
 import org.multiagent_city.nature.nature_elements.*;
+import org.multiagent_city.utils.FastNoiseLite;
+import org.multiagent_city.utils.NatureMap;
 import org.multiagent_city.utils.Position;
 import org.multiagent_city.utils.strategy.IStrategy;
 
@@ -18,6 +20,8 @@ public class Map extends Observable{
     private Map() {
 
     }
+
+
     private Nature buildNature(){
         Random rand = new Random();
         int natureRand=rand.nextInt(5)+1;
@@ -43,12 +47,14 @@ public class Map extends Observable{
         }
         return nature;
     }
-    public void buildMap(){
+    public void buildMap(FastNoiseLite noise, int blurRadius){
         this.zones = new Zone[this.height][this.width];
+        Nature[][] natureMap = NatureMap.generateNatureMap(this.width, this.height, noise, blurRadius);
+
         for(int x = 0; x < this.height; x++){
             for(int y = 0; y < this.width; y++){
 
-                this.zones[x][y] = new Zone(this.buildNature());
+                this.zones[x][y] = new Zone(natureMap[x][y]);
             }
         }
     }
@@ -114,7 +120,7 @@ public class Map extends Observable{
                 printZone += this.zones[x][y].toString() + "|";
             }
 
-            printZone +="\n"+ "-".repeat(width*2-1)+"\n";
+            printZone +="\n";
         }
         return "Map{" +
                 "zones=" + printZone+

@@ -108,7 +108,7 @@ public class Map extends Observable{
 
     @Override
     public String toString() {
-        String printZone = "";
+        String printZone = "\n";
         for(int x = 0; x < this.height; x++){
             for(int y = 0; y < this.width; y++){
                 printZone += this.zones[x][y].toString() + "|";

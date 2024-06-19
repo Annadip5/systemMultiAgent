@@ -12,6 +12,8 @@ public abstract class ZoneState {
     }
 
     public abstract void nextState() ;
-
+    public void deleteInfrastructure() {
+        this.zone.deleteInfrastructure();
+    }
 
 }

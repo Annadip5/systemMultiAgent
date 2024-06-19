@@ -41,11 +41,22 @@ public abstract class Infrastructure {
         this.minHealth = minHealth;
     }
 
+
+
     public int getMaxHealth() {
         return maxHealth;
     }
 
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
+    }
+    @Override
+    public String toString() {
+        return "Infrastructure{" +
+                "type=" + type +
+                ", usuryCoefficient=" + usuryCoefficient +
+                ", minHealth=" + minHealth +
+                ", maxHealth=" + maxHealth +
+                '}';
     }
 }

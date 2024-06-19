@@ -4,6 +4,6 @@ import org.multiagent_city.nature.Nature;
 
 public class Tree extends Nature {
     public Tree() {
-        super("Tree");
+        super("Tree", true);
     }
 }

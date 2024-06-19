@@ -46,7 +46,7 @@ public class Zone {
     }
 
     public boolean isBuildable() {
-        return !this.isOccupied(); // TODO : Add nature into consideration
+        return !this.isOccupied() && nature.isBuildable();
     }
 
     public void deleteInfrastructure() {

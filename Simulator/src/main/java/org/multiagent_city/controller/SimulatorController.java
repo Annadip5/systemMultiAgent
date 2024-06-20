@@ -2,6 +2,7 @@ package org.multiagent_city.controller;
 
 /*import javafx.event.ActionEvent;
 import javafx.event.EventHandler;*/
+import org.multiagent_city.agents.buildings.TownHall;
 import org.multiagent_city.environment.Map;
 import org.multiagent_city.model.Simulator;
 import org.multiagent_city.utils.FastNoiseLite;
@@ -39,7 +40,7 @@ public class SimulatorController {
         this.simulator.getMap().setWidth(width);
     }
     public void setTownHallPosition(int x, int y){
-          this.simulator.getMap().setTownHallPosition(new Position(x, y));
+          this.simulator.getMap().setTownHall(new TownHall(x, y));
     }
     public void createSimulation(FastNoiseLite noise, int blurRadius) {
         this.simulator.getMap().buildMap(noise, blurRadius);
@@ -47,9 +48,9 @@ public class SimulatorController {
     }
 
     public Color getNatureColorFromZone(int x, int y) {
-        Position townHallPos = this.simulator.getMap().getTownHallPosition();
-        if (townHallPos.isEqual(x, y)) {
-            return new Color(255,0,0);
+        TownHall townHall = this.simulator.getMap().getTownHall();
+        if (townHall.getPosition().isEqual(x, y)) {
+            return townHall.getType().getColor();
         }
         return this.simulator.getMap().getZones()[x][y].getNature().getColor();
     }

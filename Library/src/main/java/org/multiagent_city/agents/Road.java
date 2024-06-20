@@ -13,14 +13,14 @@ public class Road extends Infrastructure {
 
     List<Position> RoadsPosition;
 
-    public Road(InfrastructureType type, float usuryCoefficient, int minHealth, int maxHealth) {
-        super(type, usuryCoefficient, minHealth, maxHealth);
+    public Road(InfrastructureType type, float usuryCoefficient, int minHealth, int maxHealth, Position position) {
+        super(type, usuryCoefficient, minHealth, maxHealth, position);
         this.RoadsPosition = new LinkedList<>();
     }
 
-    public Road(InfrastructureType type) {
+    public Road(InfrastructureType type, Position position) {
 
-        super(type);
+        super(type, position);
         this.RoadsPosition = new LinkedList<>();
     }
 

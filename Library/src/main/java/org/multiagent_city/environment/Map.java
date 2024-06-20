@@ -1,5 +1,6 @@
 package org.multiagent_city.environment;
 
+import org.multiagent_city.agents.buildings.TownHall;
 import org.multiagent_city.nature.Nature;
 import org.multiagent_city.nature.nature_elements.*;
 import org.multiagent_city.utils.FastNoiseLite;
@@ -16,37 +17,11 @@ public class Map extends Observable{
     private Zone[][] zones;
     private int width;
     private int height;
-    private Position townHallPosition;
+    private TownHall townHall;
     private Map() {
 
     }
 
-
-    private Nature buildNature(){
-        Random rand = new Random();
-        int natureRand=rand.nextInt(5)+1;
-        Nature nature;
-        switch(natureRand){
-            case 1:
-                nature =  new Bush();
-                break;
-            case 2:
-                nature =  new Grass();
-                break;
-            case 3:
-                nature =  new Rock();
-                break;
-            case 4:
-                nature =  new Tree();
-                break;
-            case 5:
-                nature =  new Water();
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + natureRand);
-        }
-        return nature;
-    }
     public void buildMap(FastNoiseLite noise, int blurRadius){
         this.zones = new Zone[this.height][this.width];
         Nature[][] natureMap = NatureMap.generateNatureMap(this.width, this.height, noise, blurRadius);
@@ -81,11 +56,12 @@ public class Map extends Observable{
         this.zones = zones;
     }
 
-    public Position getTownHallPosition() {
-        return townHallPosition;
+    public TownHall getTownHall() {
+        return townHall;
     }
-    public void setTownHallPosition(Position townHallPosition) {
-        this.townHallPosition = townHallPosition;
+
+    public void setTownHall(TownHall townHall) {
+        this.townHall = townHall;
     }
 
     // Methods
@@ -126,7 +102,7 @@ public class Map extends Observable{
                 "zones=" + printZone+
                 ", width=" + width +
                 ", height=" + height +
-                ", townHallPosition=" + townHallPosition.toString() +
+                ", townHallPosition=" + townHall.getPosition().toString() +
                 '}';
     }
 }

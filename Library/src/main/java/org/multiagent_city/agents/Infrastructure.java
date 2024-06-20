@@ -9,15 +9,17 @@ public abstract class Infrastructure {
     protected int minHealth;
     protected int maxHealth;
     protected Position position;
-    public Infrastructure(InfrastructureType type, float usuryCoefficient, int minHealth, int maxHealth) {
+    public Infrastructure(InfrastructureType type, float usuryCoefficient, int minHealth, int maxHealth, Position position) {
         this.type = type;
         this.usuryCoefficient = usuryCoefficient;
         this.minHealth = minHealth;
         this.maxHealth = maxHealth;
+        this.position = position;
     }
 
-    public Infrastructure(InfrastructureType type) {
+    public Infrastructure(InfrastructureType type, Position position) {
         this.type = type;
+        this.position = position;
     }
     public InfrastructureType getType() {
         return type;

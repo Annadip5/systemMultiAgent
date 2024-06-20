@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import org.multiagent_city.controller.SimulatorController;
 import org.multiagent_city.model.Simulator;
 import org.multiagent_city.utils.FastNoiseLite;
+import org.multiagent_city.utils.strategy.StrategyAStar;
+import org.multiagent_city.utils.strategy.StrategyRandom;
 import org.multiagent_city.view.SimulatorView;
 
 public class Boot extends Game {
@@ -30,7 +32,6 @@ public class Boot extends Game {
         SimulatorView simulatorView = new SimulatorView();
         SimulatorController simulatorController = new SimulatorController(simulatorView, simulator);
         simulatorController.setMapSize(mapWidth,mapHeight);
-        simulatorController.setTownHallPosition(15,29);
 
         // Create noise map for nature
         FastNoiseLite noise = new FastNoiseLite(1);
@@ -39,14 +40,21 @@ public class Boot extends Game {
 
         int blurRadius = 1;
         simulatorController.createSimulation(noise, blurRadius);
+        simulatorController.setTownHallPosition(15,29);
 
+        // Create agents
+        for (int i = 0; i < 500; i++) {
+            simulatorController.addRoad(new StrategyRandom());
+        }
+
+        // Display the colors
         noiseMap = new java.awt.Color[mapHeight][mapWidth];
         for (int x = 0; x < mapHeight; x++) {
             for (int y = 0; y < mapWidth; y++) {
                 noiseMap[x][y] = simulatorController.getNatureColorFromZone(x, y);
             }
         }
-        simulatorController.updateView();
+        //simulatorController.updateView();
     }
 
     @Override

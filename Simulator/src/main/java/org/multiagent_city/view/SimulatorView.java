@@ -9,7 +9,6 @@ public class SimulatorView {
     }
     public void printMap(Map map){
         System.out.println(map.toString());
-
     }
 
 

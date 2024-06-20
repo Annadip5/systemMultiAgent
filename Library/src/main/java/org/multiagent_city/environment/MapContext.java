@@ -23,7 +23,7 @@ public class MapContext {
     }
 
     // Method
-    public void execute(Map map, Infrastructure infrastructure ) {
-        this.strategy.execute(map, infrastructure);
+    public Position execute(Map map, Infrastructure infrastructure ) {
+        return this.strategy.execute(map, infrastructure);
     }
 }

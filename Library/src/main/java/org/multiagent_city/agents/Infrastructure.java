@@ -18,6 +18,9 @@ public abstract class Infrastructure {
         this.position = position;
     }
 
+    public Infrastructure(InfrastructureType type) {
+        this.type = type;
+    }
     public Infrastructure(InfrastructureType type, Position position) {
         this.type = type;
         this.position = position;
@@ -81,6 +84,6 @@ public abstract class Infrastructure {
         return positionToCheck.getX() >= 0 && positionToCheck.getX() < mapWidth && positionToCheck.getY() >= 0 && positionToCheck.getY() < mapHeight;
     }
     public Boolean checkBuildRule(Map map, Position positionToCheck){
-        return this.isInMap(positionToCheck,map.getWidth(),map.getHeight()) && this.checkSpecificRule(map, positionToCheck)&& map.isZoneBuildable(positionToCheck);
+        return this.isInMap(positionToCheck,map.getWidth(),map.getHeight()) && this.checkSpecificRule(map, positionToCheck) && map.isZoneBuildable(positionToCheck);
     }
 }

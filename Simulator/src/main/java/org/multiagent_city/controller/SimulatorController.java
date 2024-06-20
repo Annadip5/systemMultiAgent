@@ -7,6 +7,7 @@ import org.multiagent_city.environment.Map;
 import org.multiagent_city.model.Simulator;
 import org.multiagent_city.utils.FastNoiseLite;
 import org.multiagent_city.utils.Position;
+import org.multiagent_city.utils.strategy.IStrategy;
 import org.multiagent_city.view.SimulatorView;
 
 import java.awt.*;
@@ -52,8 +53,16 @@ public class SimulatorController {
         if (townHall.getPosition().isEqual(x, y)) {
             return townHall.getType().getColor();
         }
+        if (this.simulator.getMap().getZones()[x][y].getInfrastructure() != null) {
+            return this.simulator.getMap().getZones()[x][y].getInfrastructure().getType().getColor();
+        }
         return this.simulator.getMap().getZones()[x][y].getNature().getColor();
     }
+
+    public void addRoad(IStrategy strategy) {
+        this.simulator.getMap().addRoad(strategy);
+    }
+
     public void updateView(){
         this.view.printMap(this.simulator.getMap());
     }

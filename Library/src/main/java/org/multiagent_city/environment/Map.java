@@ -1,5 +1,7 @@
 package org.multiagent_city.environment;
 
+import org.multiagent_city.agents.Building;
+import org.multiagent_city.agents.Road;
 import org.multiagent_city.agents.buildings.TownHall;
 import org.multiagent_city.nature.Nature;
 import org.multiagent_city.nature.nature_elements.*;
@@ -8,7 +10,9 @@ import org.multiagent_city.utils.NatureMap;
 import org.multiagent_city.utils.Position;
 import org.multiagent_city.utils.strategy.IStrategy;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Map extends Observable{
@@ -18,8 +22,12 @@ public class Map extends Observable{
     private int width;
     private int height;
     private TownHall townHall;
-    private Map() {
+    private List<Road> roads;
+    private List<Building> buildings;
 
+    private Map() {
+        this.roads = new ArrayList<>();
+        this.buildings = new ArrayList<>();
     }
 
     public void buildMap(FastNoiseLite noise, int blurRadius){
@@ -62,6 +70,23 @@ public class Map extends Observable{
 
     public void setTownHall(TownHall townHall) {
         this.townHall = townHall;
+        this.zones[townHall.getPosition().getX()][townHall.getPosition().getY()].setInfrastructure(townHall);
+    }
+
+    public List<Road> getRoads() {
+        return roads;
+    }
+
+    public void setRoads(List<Road> roads) {
+        this.roads = roads;
+    }
+
+    public List<Building> getBuildings() {
+        return buildings;
+    }
+
+    public void setBuildings(List<Building> buildings) {
+        this.buildings = buildings;
     }
 
     // Methods
@@ -84,8 +109,21 @@ public class Map extends Observable{
         return this.zones[position.getX()][position.getY()].isBuildable();
     }
 
-    public void setStrategy(IStrategy strategy){
+    public void addBuilding(IStrategy strategy){
 
+    }
+    public void addRoad(IStrategy strategy){
+        MapContext context = new MapContext(strategy);
+        Road road = new Road();
+        Position newPosition = context.execute(this, road);
+
+        road.setPosition(newPosition);
+
+        // Add the road agent to list
+        this.roads.add(road);
+        // Add the road to the zone
+        this.zones[newPosition.getX()][newPosition.getY()].setInfrastructure(road);
+        System.out.println(newPosition);
     }
 
     @Override

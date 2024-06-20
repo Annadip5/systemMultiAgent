@@ -1,5 +1,6 @@
 package org.multiagent_city.environment;
 
+import org.multiagent_city.agents.Infrastructure;
 import org.multiagent_city.utils.Position;
 import org.multiagent_city.utils.strategy.IStrategy;
 
@@ -22,7 +23,7 @@ public class MapContext {
     }
 
     // Method
-    public void execute(Zone[][] zones, Position townHallPosition) {
-        this.strategy.execute(zones, townHallPosition);
+    public void execute(Map map, Infrastructure infrastructure ) {
+        this.strategy.execute(map, infrastructure);
     }
 }

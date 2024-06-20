@@ -81,6 +81,6 @@ public abstract class Infrastructure {
         return positionToCheck.getX() >= 0 && positionToCheck.getX() < mapWidth && positionToCheck.getY() >= 0 && positionToCheck.getY() < mapHeight;
     }
     public Boolean checkBuildRule(Map map, Position positionToCheck){
-        return this.isInMap(positionToCheck,map.getWidth(),map.getHeight()) && this.checkSpecificRule(map, positionToCheck);
+        return this.isInMap(positionToCheck,map.getWidth(),map.getHeight()) && this.checkSpecificRule(map, positionToCheck)&& map.isZoneBuildable(positionToCheck);
     }
 }

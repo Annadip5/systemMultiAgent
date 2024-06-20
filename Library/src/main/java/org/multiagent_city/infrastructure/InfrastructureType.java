@@ -1,17 +1,15 @@
 package org.multiagent_city.infrastructure;
 
-import org.multiagent_city.utils.Color;
 import org.multiagent_city.utils.Texture;
+
+import java.awt.*;
 
 public class InfrastructureType {
     private String name;
-
-
-
     private Color color;
-    private Texture texture;
+    private String texture;
 
-    public InfrastructureType(String name, Color color, Texture texture) {
+    public InfrastructureType(String name, Color color, String texture) {
         this.name = name;
         this.color = color;
         this.texture = texture;
@@ -33,12 +31,10 @@ public class InfrastructureType {
         this.color = color;
     }
 
-
-
-    public Texture getTexture() {
+    public String getTexture() {
         return texture;
     }
-    public void setTexture(Texture texture) {
+    public void setTexture(String texture) {
         this.texture = texture;
     }
 

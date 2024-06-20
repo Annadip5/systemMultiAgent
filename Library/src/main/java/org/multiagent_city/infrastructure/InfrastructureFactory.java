@@ -1,15 +1,10 @@
 package org.multiagent_city.infrastructure;
-import org.multiagent_city.utils.Color;
-import org.multiagent_city.utils.Texture;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 public class InfrastructureFactory {
-    private List<InfrastructureType> infrastructureTypes;
-
-    public InfrastructureFactory() {
-        this.infrastructureTypes = new ArrayList<>();
-    }
+    private static List<InfrastructureType> infrastructureTypes = new ArrayList<>();
 
     public void addInfrastructureType(InfrastructureType type) {
         infrastructureTypes.add(type);
@@ -18,31 +13,21 @@ public class InfrastructureFactory {
         infrastructureTypes.remove(type);
     }
 
-
-
     public List<InfrastructureType> getInfrastructureTypes() {
         return infrastructureTypes;
     }
 
-    public void setInfrastructureTypes(List<InfrastructureType> infrastructureTypes) {
-        this.infrastructureTypes = infrastructureTypes;
-    }
-    //A MODIFIER
-    public /*Infrastructure*/boolean createInfrastructure(String typeName, Color color, Texture texture) {
-        for (InfrastructureType type : infrastructureTypes) {
-            if (type.getName().equals(typeName)&& type.getColor() == color && type.getTexture() == texture) {
-                return false;
-            }
-        }
-        throw new IllegalArgumentException("Unknown infrastructure type: " + typeName);
-    }
-    public InfrastructureType getInfrastructureType(String name, Color color, Texture texture) {
+    public InfrastructureType getInfrastructureType(String name, Color color, String texture) {
+
         for (InfrastructureType type : infrastructureTypes) {
             if (type.getName().equals(name) && type.getColor() == color && type.getTexture() == texture) {
                 return type;
             }
         }
-        return null;
+        // Add the new type
+        InfrastructureType newType = new InfrastructureType(name, color, texture);
+        infrastructureTypes.add(newType);
+        return newType;
     }
     @Override
     public String toString() {

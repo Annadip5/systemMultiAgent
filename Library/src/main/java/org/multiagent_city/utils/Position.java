@@ -46,11 +46,11 @@ public class Position {
         }
         return false;
     }
-    private static double heuristic(Position a, Position b) {
+    public static double heuristic(Position a, Position b) {
         return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
     }
 
-    private static double distance(Position a, Position b) {
+    public static double distance(Position a, Position b) {
         return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
     }
 }

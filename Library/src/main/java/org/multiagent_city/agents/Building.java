@@ -1,7 +1,9 @@
 package org.multiagent_city.agents;
 
 import org.multiagent_city.agents.Infrastructure;
+import org.multiagent_city.environment.Map;
 import org.multiagent_city.infrastructure.InfrastructureType;
+import org.multiagent_city.utils.Position;
 
 public abstract class Building extends Infrastructure {
     private int capacity;
@@ -35,5 +37,6 @@ public abstract class Building extends Infrastructure {
     public void setSpawnProbability(int spawnProbability) {
         this.spawnProbability = spawnProbability;
     }
+
 
 }

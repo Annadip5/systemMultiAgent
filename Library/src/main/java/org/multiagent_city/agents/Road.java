@@ -24,6 +24,8 @@ public class Road extends Infrastructure {
         this.RoadsPosition = new LinkedList<>();
     }
 
+
+
     public void generate(Map map,Position roadPosition){
 
         map.getZones()[roadPosition.getX()][roadPosition.getY()].setInfrastructure(this);
@@ -31,7 +33,8 @@ public class Road extends Infrastructure {
 
     }
 
-    public Boolean checkBuildRule(Map map, Position positionToCheck){
+    @Override
+    public Boolean checkSpecificRule(Map map, Position positionToCheck){
         if(map.isZoneBuildable(positionToCheck)) {
 
             Position positionUp = new Position(positionToCheck.getX(), positionToCheck.getY() + 1);

@@ -1,12 +1,14 @@
 package org.multiagent_city.agents;
 
 import org.multiagent_city.infrastructure.InfrastructureType;
+import org.multiagent_city.utils.Position;
 
 public abstract class Infrastructure {
     private InfrastructureType type;
     protected float usuryCoefficient;
     protected int minHealth;
     protected int maxHealth;
+    protected Position position;
     public Infrastructure(InfrastructureType type, float usuryCoefficient, int minHealth, int maxHealth) {
         this.type = type;
         this.usuryCoefficient = usuryCoefficient;
@@ -50,6 +52,7 @@ public abstract class Infrastructure {
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
+
     @Override
     public String toString() {
         return "Infrastructure{" +

@@ -8,6 +8,7 @@ public abstract class Infrastructure {
     protected float usuryCoefficient;
     protected int minHealth;
     protected int maxHealth;
+    protected Position position;
     public Infrastructure(InfrastructureType type, float usuryCoefficient, int minHealth, int maxHealth) {
         this.type = type;
         this.usuryCoefficient = usuryCoefficient;
@@ -51,6 +52,7 @@ public abstract class Infrastructure {
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
+
     @Override
     public String toString() {
         return "Infrastructure{" +

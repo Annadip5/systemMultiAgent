@@ -17,7 +17,7 @@ public class InfrastructureFactory {
         return infrastructureTypes;
     }
 
-    public InfrastructureType getInfrastructureType(String name, Color color, String texture) {
+    public static InfrastructureType getInfrastructureType(String name, Color color, String texture) {
 
         for (InfrastructureType type : infrastructureTypes) {
             if (type.getName().equals(name) && type.getColor() == color && type.getTexture() == texture) {

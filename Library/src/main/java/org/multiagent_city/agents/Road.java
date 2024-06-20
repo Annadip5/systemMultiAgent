@@ -3,9 +3,12 @@ package org.multiagent_city.agents;
 import org.multiagent_city.agents.Infrastructure;
 import org.multiagent_city.environment.Map;
 import org.multiagent_city.environment.Zone;
+import org.multiagent_city.infrastructure.InfrastructureFactory;
 import org.multiagent_city.infrastructure.InfrastructureType;
 import org.multiagent_city.utils.Position;
+import org.multiagent_city.utils.Texture;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,8 +16,8 @@ public class Road extends Infrastructure {
 
     List<Position> roadsPosition;
 
-    public Road(InfrastructureType type, float usuryCoefficient, int minHealth, int maxHealth, Position position) {
-        super(type, usuryCoefficient, minHealth, maxHealth, position);
+    public Road(float usuryCoefficient, int minHealth, int maxHealth, Position position) {
+        super(InfrastructureFactory.getInfrastructureType("Road", new Color(0,0,0), Texture.road), usuryCoefficient, minHealth, maxHealth, position);
         this.roadsPosition = new LinkedList<>();
     }
 

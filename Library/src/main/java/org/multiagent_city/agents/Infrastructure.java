@@ -1,6 +1,7 @@
 package org.multiagent_city.agents;
 
 import org.multiagent_city.infrastructure.InfrastructureType;
+import org.multiagent_city.utils.Position;
 
 public abstract class Infrastructure {
     private InfrastructureType type;
@@ -58,5 +59,9 @@ public abstract class Infrastructure {
                 ", minHealth=" + minHealth +
                 ", maxHealth=" + maxHealth +
                 '}';
+    }
+    
+    public boolean isInMap(Position positionToCheck, int mapWidth, int mapHeight) {
+        return positionToCheck.getX() >= 0 && positionToCheck.getX() < mapWidth && positionToCheck.getY() >= 0 && positionToCheck.getY() < mapHeight;
     }
 }

@@ -76,12 +76,10 @@ public class StrategyAStar implements IStrategy {
     }
 
     private double heuristic(Position a, Position b) {
-        // Calcul de l'heuristique (distance de Manhattan par exemple)
         return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
     }
 
     private double distance(Position a, Position b) {
-        // Calcul de la distance entre deux positions (pour simplifier, nous utilisons la distance de Manhattan)
         return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
     }
 

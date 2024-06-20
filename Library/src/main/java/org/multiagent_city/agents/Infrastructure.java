@@ -53,13 +53,22 @@ public abstract class Infrastructure {
         this.maxHealth = maxHealth;
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     @Override
     public String toString() {
         return "Infrastructure{" +
-                "type=" + type +
+                "type=" + type.getName() +
                 ", usuryCoefficient=" + usuryCoefficient +
                 ", minHealth=" + minHealth +
                 ", maxHealth=" + maxHealth +
+                ", position=" + position.toString() +
                 '}';
     }
     

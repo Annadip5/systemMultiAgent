@@ -1,5 +1,6 @@
 package org.multiagent_city.agents;
 
+import org.multiagent_city.environment.Map;
 import org.multiagent_city.infrastructure.InfrastructureType;
 import org.multiagent_city.utils.Position;
 
@@ -73,8 +74,13 @@ public abstract class Infrastructure {
                 ", position=" + position.toString() +
                 '}';
     }
-    
+    public abstract Boolean checkSpecificRule(Map map, Position positionToCheck);
+
+
     public boolean isInMap(Position positionToCheck, int mapWidth, int mapHeight) {
         return positionToCheck.getX() >= 0 && positionToCheck.getX() < mapWidth && positionToCheck.getY() >= 0 && positionToCheck.getY() < mapHeight;
+    }
+    public Boolean checkBuildRule(Map map, Position positionToCheck){
+        return this.isInMap(positionToCheck,map.getWidth(),map.getHeight()) && this.checkSpecificRule(map, positionToCheck);
     }
 }

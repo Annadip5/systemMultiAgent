@@ -39,7 +39,8 @@ public abstract class Building extends Infrastructure {
         this.spawnProbability = spawnProbability;
     }
 
-    public Boolean checkBuildRule(Map map, Position positionToCheck){
+    @Override
+    public Boolean checkSpecificRule(Map map, Position positionToCheck){
         if(map.isZoneBuildable(positionToCheck)) {
 
             boolean isPresentUp = map.getZones()[positionToCheck.getX()][positionToCheck.getY()+1].getInfrastructure() instanceof Road;

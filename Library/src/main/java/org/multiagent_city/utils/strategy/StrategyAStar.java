@@ -1,5 +1,7 @@
 package org.multiagent_city.utils.strategy;
 
+import org.multiagent_city.agents.Infrastructure;
+import org.multiagent_city.environment.Map;
 import org.multiagent_city.environment.Zone;
 import org.multiagent_city.utils.Position;
 
@@ -24,12 +26,12 @@ public class StrategyAStar implements IStrategy {
     }
 
     @Override
-    public void execute(Zone[][] zones, Position townHallPosition) {
+    public void execute(Map map, Infrastructure infrastructure ) {
         List<Node> openList = new ArrayList<>();
         List<Node> closedList = new ArrayList<>();
         /*A MODIFIER*/
-        Position start = new Position(0, 0)/*townHallPosition*/;
-        Position goal = townHallPosition/*position qui n est pas deja construit et qui peut l'être*/;
+        Position start = map.getTownHall().getPosition();
+        Position goal = map.getTownHall().getPosition();/*position qui n est pas deja construit et qui peut l'être*/;
 
         Node startNode = new Node(start, null, 0, heuristic(start, goal));
         openList.add(startNode);
@@ -53,7 +55,7 @@ public class StrategyAStar implements IStrategy {
             closedList.add(currentNode);
 
             // Générer les nœuds voisins
-            for (Position neighborPos : getNeighbors(currentNode.position, zones)) {
+            for (Position neighborPos : getNeighbors(currentNode.position, map.getZones())) {
                 if (isInList(closedList, neighborPos)) {
                     continue;  // Ignorez les voisins déjà explorés
                 }

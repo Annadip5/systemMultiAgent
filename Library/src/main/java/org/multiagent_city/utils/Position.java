@@ -36,11 +36,11 @@ public class Position {
     public boolean isEqual(Position position) {
         return this.x == position.x && this.y == position.y;
     }
-    private double heuristic(Position a, Position b) {
+    private static double heuristic(Position a, Position b) {
         return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
     }
 
-    private double distance(Position a, Position b) {
+    private static double distance(Position a, Position b) {
         return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
     }
 }

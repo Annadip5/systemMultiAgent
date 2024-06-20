@@ -1,5 +1,7 @@
 package org.multiagent_city.utils;
 
+import java.util.ArrayList;
+
 public class Position {
     private int x;
     private int y;
@@ -35,6 +37,14 @@ public class Position {
     }
     public boolean isEqual(Position position) {
         return this.x == position.x && this.y == position.y;
+    }
+    public boolean isContained(ArrayList<Position> positions){
+        for(int i =0; i< positions.size();i++){
+            if (positions.get(i).isEqual(this)){
+                return true;
+            }
+        }
+        return false;
     }
     private static double heuristic(Position a, Position b) {
         return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());

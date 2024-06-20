@@ -30,29 +30,28 @@ public class Road extends Infrastructure {
 
 
     public void generate(Map map,Position roadPosition){
-
+        this.roadsPosition.add(roadPosition);
         map.getZones()[roadPosition.getX()][roadPosition.getY()].setInfrastructure(this);
-        this.roadsPosition.add(new Position());
+
 
     }
 
     @Override
-    public Boolean checkSpecificRule(Map map, Position positionToCheck){
-        if(map.isZoneBuildable(positionToCheck)) {
-
+    public Boolean checkSpecificRule(Map map, Position positionToCheck) {
+        if(!map.isZoneBuildable(positionToCheck)) {
+            return false;
+        }
+        if(roadsPosition.size()==0){
             Position positionUp = new Position(positionToCheck.getX(), positionToCheck.getY() + 1);
             Position positionDown = new Position(positionToCheck.getX(), positionToCheck.getY() - 1);
             Position positionLeft = new Position(positionToCheck.getX() - 1, positionToCheck.getY());
             Position positionRight = new Position(positionToCheck.getX() + 1, positionToCheck.getY());
 
-            boolean isPresentUp = roadsPosition.stream().anyMatch(element -> element.equals(positionUp));
-            boolean isPresentDown = roadsPosition.stream().anyMatch(element -> element.equals(positionDown));
-            boolean isPresentLeft = roadsPosition.stream().anyMatch(element -> element.equals(positionLeft));
-            boolean isPresentRight = roadsPosition.stream().anyMatch(element -> element.equals(positionRight));
+            boolean isPresentUp = map.getTownHall().getPosition().equals(positionUp);
+            boolean isPresentDown = map.getTownHall().getPosition().equals(positionDown);
+            boolean isPresentLeft = map.getTownHall().getPosition().equals(positionLeft);
+            boolean isPresentRight = map.getTownHall().getPosition().equals(positionRight);
 
-            if ((isPresentUp && isPresentLeft) || (isPresentUp && isPresentRight) || (isPresentDown && isPresentLeft) || (isPresentDown && isPresentRight)) {
-                return false;
-            }
             if (isPresentUp) {
                 return true;
             }
@@ -65,9 +64,36 @@ public class Road extends Infrastructure {
             if (isPresentRight) {
                 return true;
             }
-        }
-         return false;
+            return false;
 
+
+        }
+        Position positionUp = new Position(positionToCheck.getX(), positionToCheck.getY() + 1);
+        Position positionDown = new Position(positionToCheck.getX(), positionToCheck.getY() - 1);
+        Position positionLeft = new Position(positionToCheck.getX() - 1, positionToCheck.getY());
+        Position positionRight = new Position(positionToCheck.getX() + 1, positionToCheck.getY());
+
+        boolean isPresentUp = roadsPosition.stream().anyMatch(element -> element.equals(positionUp));
+        boolean isPresentDown = roadsPosition.stream().anyMatch(element -> element.equals(positionDown));
+        boolean isPresentLeft = roadsPosition.stream().anyMatch(element -> element.equals(positionLeft));
+        boolean isPresentRight = roadsPosition.stream().anyMatch(element -> element.equals(positionRight));
+
+        if ((isPresentUp && isPresentLeft) || (isPresentUp && isPresentRight) || (isPresentDown && isPresentLeft) || (isPresentDown && isPresentRight)) {
+            return false;
+        }
+        if (isPresentUp) {
+            return true;
+        }
+        if (isPresentDown) {
+            return true;
+        }
+        if (isPresentLeft) {
+            return true;
+        }
+        if (isPresentRight) {
+            return true;
+        }
+        return false;
 
 
     }

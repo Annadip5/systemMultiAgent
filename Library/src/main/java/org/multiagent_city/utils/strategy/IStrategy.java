@@ -6,5 +6,5 @@ import org.multiagent_city.environment.Zone;
 import org.multiagent_city.utils.Position;
 
 public interface IStrategy {
-    void execute(Map map, Infrastructure infrastructure );
+    Position execute(Map map, Infrastructure infrastructure );
 }

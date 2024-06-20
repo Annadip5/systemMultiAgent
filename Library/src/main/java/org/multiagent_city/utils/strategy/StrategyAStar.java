@@ -28,7 +28,7 @@ public class StrategyAStar implements IStrategy {
     }
 
     @Override
-    public void execute(Map map, Infrastructure infrastructure ) {
+    public Position execute(Map map, Infrastructure infrastructure) {
         List<Node> openList = new ArrayList<>();
         List<Node> closedList = new ArrayList<>();
         /*A MODIFIER*/
@@ -36,7 +36,7 @@ public class StrategyAStar implements IStrategy {
         Position goal = findConstructibleAdjacentPosition(map, start, infrastructure);
         if (goal == null) {
             System.out.println("No constructible position adjacent to a road found.");
-            return;
+            return null;
         }
         Node startNode = new Node(start, null, 0, Position.heuristic(start, goal));
         openList.add(startNode);
@@ -45,14 +45,9 @@ public class StrategyAStar implements IStrategy {
             // Trouver le nœud avec le coût total le plus bas
             Node currentNode = openList.stream().min(Comparator.comparingDouble(n -> n.fCost)).orElse(null);
 
-            if (currentNode == null) {
-                break;
-            }
-
-            // Si nous avons atteint la position du goal, terminez
+            // Position finale atteinte
             if (currentNode.position.equals(goal)) {
-                reconstructPath(currentNode);
-                return;
+                return reconstructPath(currentNode);
             }
 
             // Déplacer le nœud courant de la liste ouverte à la liste fermée
@@ -80,10 +75,9 @@ public class StrategyAStar implements IStrategy {
                 }
             }
         }
+        return null; // Si aucun chemin n'a été trouvé
     }
 
-
-/*RECUPERER LES CASE HAUT, BAS, DROITE, GAUCHE*/
     private List<Position> getNeighbors(Position pos, Zone[][] zones) {
         List<Position> neighbors = new ArrayList<>();
         int x = pos.getX();
@@ -104,8 +98,8 @@ public class StrategyAStar implements IStrategy {
     private Node getNodeFromList(List<Node> list, Position pos) {
         return list.stream().filter(node -> node.position.equals(pos)).findFirst().orElse(null);
     }
-    private Position findConstructibleAdjacentPosition(Map map, Position start, Infrastructure infrastructure) {
 
+    private Position findConstructibleAdjacentPosition(Map map, Position start, Infrastructure infrastructure) {
         if (map.getZones()[start.getX()][start.getY()].getInfrastructure() instanceof Road
                 || map.getZones()[start.getX()][start.getY()].getInfrastructure() instanceof TownHall) {
             for (Position neighbor : getNeighbors(start, map.getZones())) {
@@ -113,13 +107,11 @@ public class StrategyAStar implements IStrategy {
                     return neighbor;
                 }
             }
-
-
         }
         return null;
     }
 
-    private void reconstructPath(Node currentNode) {
+    private Position reconstructPath(Node currentNode) {
         // Recréez le chemin en remontant les parents des nœuds
         List<Position> path = new ArrayList<>();
         while (currentNode != null) {
@@ -127,7 +119,7 @@ public class StrategyAStar implements IStrategy {
             currentNode = currentNode.parent;
         }
         Collections.reverse(path);
-        // Afficher ou utiliser le chemin
         path.forEach(System.out::println);
+        return path.isEmpty() ? null : path.get(path.size() - 1);
     }
 }

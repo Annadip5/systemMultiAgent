@@ -1,6 +1,7 @@
 package org.multiagent_city.environment;
 
 import org.multiagent_city.agents.Building;
+import org.multiagent_city.agents.Infrastructure;
 import org.multiagent_city.agents.Road;
 import org.multiagent_city.agents.buildings.TownHall;
 import org.multiagent_city.nature.Nature;
@@ -9,6 +10,7 @@ import org.multiagent_city.utils.FastNoiseLite;
 import org.multiagent_city.utils.NatureMap;
 import org.multiagent_city.utils.Position;
 import org.multiagent_city.utils.strategy.IStrategy;
+import org.multiagent_city.zonestate.LockedState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,6 +111,14 @@ public class Map extends Observable{
         return this.zones[position.getX()][position.getY()].isBuildable();
     }
 
+    private void setZone(Position position, Infrastructure infrastructure) {
+        Zone zone = this.zones[position.getX()][position.getY()];
+        // Set the infrastructure for the Zone
+        zone.setInfrastructure(infrastructure);
+        // Set the state for the Zone
+        zone.setZoneState(new LockedState(1, zone));
+    }
+
     public void addBuilding(IStrategy strategy, Class<? extends Building> buildingClass){
         MapContext context = new MapContext(strategy);
         try {
@@ -123,7 +133,7 @@ public class Map extends Observable{
             // Add the building to the list
             this.buildings.add(building);
             // Add the building to the zone
-            this.zones[newPosition.getX()][newPosition.getY()].setInfrastructure(building);
+            this.setZone(newPosition, building);
             System.out.println(building.getClass() + " " + newPosition);
         } catch (Exception e) {
             System.out.println("Error in Map.addBuilding !");
@@ -143,7 +153,7 @@ public class Map extends Observable{
         // Add the road agent to list
         this.roads.add(road);
         // Add the road to the zone
-        this.zones[newPosition.getX()][newPosition.getY()].setInfrastructure(road);
+        this.setZone(newPosition, road);
         System.out.println("Road " + newPosition);
     }
 

@@ -84,6 +84,8 @@ public class Boot extends Game {
             scheduler.shutdown();
             return;
         }
+        System.out.println("***********************");
+        System.out.println(this.counter);
         // Create agents
         this.simulatorController.addRoad(new StrategyRandom());
         // Add building with randomness

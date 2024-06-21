@@ -80,7 +80,7 @@ public class Boot extends Game {
     }
 
     public void buildInfrastructures() {
-        if (this.counter >= 50) {
+        if (this.counter >= 100) {
             scheduler.shutdown();
             return;
         }

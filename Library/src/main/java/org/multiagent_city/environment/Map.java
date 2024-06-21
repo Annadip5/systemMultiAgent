@@ -42,6 +42,9 @@ public class Map extends Observable{
                 this.zones[x][y] = new Zone(natureMap[x][y]);
             }
         }
+
+        // Notify map changes
+        this.notify(this, null);
     }
     public int getWidth() {
         return width;
@@ -73,6 +76,8 @@ public class Map extends Observable{
     public void setTownHall(TownHall townHall) {
         this.townHall = townHall;
         this.zones[townHall.getPosition().getX()][townHall.getPosition().getY()].setInfrastructure(townHall);
+        // Notify map changes
+        this.notify(this, townHall.getPosition());
     }
 
     public List<Road> getRoads() {
@@ -81,6 +86,8 @@ public class Map extends Observable{
 
     public void setRoads(List<Road> roads) {
         this.roads = roads;
+        // Notify map changes
+        this.notify(this, null);
     }
 
     public List<Building> getBuildings() {
@@ -89,6 +96,8 @@ public class Map extends Observable{
 
     public void setBuildings(List<Building> buildings) {
         this.buildings = buildings;
+        // Notify map changes
+        this.notify(this, null);
     }
 
     // Methods
@@ -117,6 +126,8 @@ public class Map extends Observable{
         zone.setInfrastructure(infrastructure);
         // Set the state for the Zone
         zone.setZoneState(new LockedState(1, zone));
+        // Notify map changes
+        this.notify(this, position);
     }
 
     public void addBuilding(IStrategy strategy, Class<? extends Building> buildingClass){

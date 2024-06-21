@@ -4,6 +4,7 @@ package org.multiagent_city.controller;
 import javafx.event.EventHandler;*/
 import org.multiagent_city.agents.Building;
 import org.multiagent_city.agents.buildings.TownHall;
+import org.multiagent_city.environment.IObserver;
 import org.multiagent_city.environment.Map;
 import org.multiagent_city.model.Simulator;
 import org.multiagent_city.utils.FastNoiseLite;
@@ -49,22 +50,15 @@ public class SimulatorController {
 
     }
 
-    public Color getNatureColorFromZone(int x, int y) {
-        TownHall townHall = this.simulator.getMap().getTownHall();
-        if (townHall.getPosition().isEqual(x, y)) {
-            return townHall.getType().getColor();
-        }
-        if (this.simulator.getMap().getZones()[x][y].getInfrastructure() != null) {
-            return this.simulator.getMap().getZones()[x][y].getInfrastructure().getType().getColor();
-        }
-        return this.simulator.getMap().getZones()[x][y].getNature().getColor();
-    }
-
     public void addRoad(IStrategy strategy) {
         this.simulator.getMap().addRoad(strategy);
     }
     public void addBuilding(IStrategy strategy, Class<? extends Building> buildingClass) {
         this.simulator.getMap().addBuilding(strategy, buildingClass);
+    }
+
+    public void addObserver(IObserver observer) {
+        this.simulator.getMap().addObserver(observer);
     }
 
     public void updateView(){

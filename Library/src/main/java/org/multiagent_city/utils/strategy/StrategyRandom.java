@@ -16,7 +16,7 @@ public class StrategyRandom implements IStrategy {
         do {
             if( positions.size() == map.getHeight()* map.getWidth()){
                 System.out.println("all positions are not buildable");
-                break;
+                return null;
             }
             do {
                 int X = random.nextInt(map.getWidth());
@@ -31,6 +31,5 @@ public class StrategyRandom implements IStrategy {
         }
         while(!infrastructure.checkBuildRule(map,pos));
         return pos;
-
     }
 }

@@ -3,8 +3,14 @@ package org.multiagent_city.agents.buildings;
 import org.multiagent_city.agents.Building;
 import org.multiagent_city.infrastructure.InfrastructureType;
 import org.multiagent_city.utils.Position;
+import org.multiagent_city.utils.Texture;
+
+import java.awt.*;
 
 public class Dwelling extends Building {
+    public Dwelling(){
+        super(new InfrastructureType("Dwelling", new Color(255, 165, 0), Texture.dwelling));
+    }
     public Dwelling(InfrastructureType type, Position position) {
         super(type, position);
     }

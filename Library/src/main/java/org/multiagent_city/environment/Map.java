@@ -109,21 +109,42 @@ public class Map extends Observable{
         return this.zones[position.getX()][position.getY()].isBuildable();
     }
 
-    public void addBuilding(IStrategy strategy){
+    public void addBuilding(IStrategy strategy, Class<? extends Building> buildingClass){
+        MapContext context = new MapContext(strategy);
+        try {
+            Building building = buildingClass.getDeclaredConstructor().newInstance();
+            Position newPosition = context.execute(this, building);
 
+            if(newPosition == null) {
+                return;
+            }
+            building.setPosition(newPosition);
+
+            // Add the building to the list
+            this.buildings.add(building);
+            // Add the building to the zone
+            this.zones[newPosition.getX()][newPosition.getY()].setInfrastructure(building);
+            System.out.println(building.getClass() + " " + newPosition);
+        } catch (Exception e) {
+            System.out.println("Error in Map.addBuilding !");
+            e.printStackTrace();
+        }
     }
     public void addRoad(IStrategy strategy){
         MapContext context = new MapContext(strategy);
         Road road = new Road();
         Position newPosition = context.execute(this, road);
 
+        if(newPosition == null) {
+            return;
+        }
         road.setPosition(newPosition);
 
         // Add the road agent to list
         this.roads.add(road);
         // Add the road to the zone
         this.zones[newPosition.getX()][newPosition.getY()].setInfrastructure(road);
-        System.out.println(newPosition);
+        System.out.println("Road " + newPosition);
     }
 
     @Override

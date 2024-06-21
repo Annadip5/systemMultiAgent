@@ -3,8 +3,14 @@ package org.multiagent_city.agents.buildings;
 import org.multiagent_city.agents.Building;
 import org.multiagent_city.infrastructure.InfrastructureType;
 import org.multiagent_city.utils.Position;
+import org.multiagent_city.utils.Texture;
+
+import java.awt.*;
 
 public class School extends Building {
+    public School(){
+        super(new InfrastructureType("School", new Color(255, 215, 0), Texture.school));
+    }
     public School(InfrastructureType type, Position position) {
         super(type, position);
     }

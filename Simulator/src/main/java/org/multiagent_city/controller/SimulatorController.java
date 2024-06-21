@@ -2,6 +2,7 @@ package org.multiagent_city.controller;
 
 /*import javafx.event.ActionEvent;
 import javafx.event.EventHandler;*/
+import org.multiagent_city.agents.Building;
 import org.multiagent_city.agents.buildings.TownHall;
 import org.multiagent_city.environment.Map;
 import org.multiagent_city.model.Simulator;
@@ -61,6 +62,9 @@ public class SimulatorController {
 
     public void addRoad(IStrategy strategy) {
         this.simulator.getMap().addRoad(strategy);
+    }
+    public void addBuilding(IStrategy strategy, Class<? extends Building> buildingClass) {
+        this.simulator.getMap().addBuilding(strategy, buildingClass);
     }
 
     public void updateView(){

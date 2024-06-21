@@ -29,61 +29,44 @@ public class StrategyAStar implements IStrategy {
 
     @Override
     public Position execute(Map map, Infrastructure infrastructure) {
-        System.out.println("Execution started");
-        Position start = map.getTownHall().getPosition();
-        List<Position> roadPositions = new ArrayList<>();
-        roadPositions.add(start);
-        List<Position> newRoadPositions = new ArrayList<>();
-        boolean newRoadConstructed=false;
+        Position townHallPosition = map.getTownHall().getPosition();
+        PriorityQueue<Position> positionQueue = new PriorityQueue<>(Comparator.comparingDouble(pos -> Position.distance(pos, townHallPosition)));
+
         if (map.getRoads().isEmpty()) {
             System.out.println("No existing roads found. Starting road construction from Town Hall.");
-            Position goal = findConstructibleAdjacentPosition(map, start, infrastructure);
+            Position goal = findConstructibleAdjacentPosition(map, townHallPosition, infrastructure);
             if (goal != null) {
-                Position newRoadPosition = findPath(map, infrastructure, start, goal);
+                Position newRoadPosition = findPath(map, infrastructure, townHallPosition, goal);
                 if (newRoadPosition != null) {
                     updateMapWithNewRoad(map, newRoadPosition);
-                    newRoadPositions.add(newRoadPosition);
-                    newRoadConstructed = true;
+                    positionQueue.add(newRoadPosition);
+                    return newRoadPosition;
                 }
+            }
+        } else {
+            for (Road road : map.getRoads()) {
+                positionQueue.add(road.getPosition());
             }
         }
 
-        do {
-            if(newRoadConstructed){
-                break;}
-            newRoadConstructed = false;
-            if (!newRoadPositions.isEmpty()) {
-                roadPositions.addAll(newRoadPositions);
-                newRoadPositions.clear();
-            }
-
-            for (Road road : map.getRoads()) {
-                Position roadPos = road.getPosition();
-                Position goal = findConstructibleAdjacentPosition(map, roadPos, infrastructure);
-                if (goal != null) {
-                    System.out.println("Start Node: " + roadPos);
-                    System.out.println("Goal Node: " + goal);
-                    Position newRoadPosition = findPath(map, infrastructure, roadPos, goal);
-                    if (newRoadPosition != null && infrastructure.checkBuildRule(map, newRoadPosition)) {
-                        updateMapWithNewRoad(map, newRoadPosition);
-                        System.out.println("----------------------");
-                        System.out.println(map.getRoads());
-                        newRoadPositions.add(newRoadPosition);
-                        newRoadConstructed = true;
-                        System.out.println(newRoadPositions);
-                    }
+        while (!positionQueue.isEmpty()) {
+            Position currentPos = positionQueue.poll();
+            Position goal = findConstructibleAdjacentPosition(map, currentPos, infrastructure);
+            if (goal != null) {
+                System.out.println("Start Node: " + currentPos);
+                System.out.println("Goal Node: " + goal);
+                Position newRoadPosition = findPath(map, infrastructure, currentPos, goal);
+                if (newRoadPosition != null && infrastructure.checkBuildRule(map, newRoadPosition)) {
+                    updateMapWithNewRoad(map, newRoadPosition);
+                    positionQueue.add(newRoadPosition);
+                    return newRoadPosition;
                 }
             }
-        } while (!newRoadConstructed);
+        }
 
         System.out.println("No more constructible positions adjacent to any road found.");
-        if(newRoadPositions.isEmpty()){
-            return null;
-
-        }
-        return newRoadPositions.get(newRoadPositions.size() - 1);
+        return null;
     }
-
 
     private Position findPath(Map map, Infrastructure infrastructure, Position start, Position goal) {
         List<Node> openList = new ArrayList<>();
@@ -93,10 +76,10 @@ public class StrategyAStar implements IStrategy {
 
         while (!openList.isEmpty()) {
             Node currentNode = openList.stream().min(Comparator.comparingDouble(n -> n.fCost)).orElse(null);
-            System.out.println("Current Node: " + currentNode.position);
+            //System.out.println("Current Node: " + currentNode.position);
 
             if (currentNode.position.isEqual(goal)) {
-                System.out.println("Goal reached at: " + currentNode.position);
+                //System.out.println("Goal reached at: " + currentNode.position);
                 return reconstructPath(currentNode);
             }
 
@@ -113,14 +96,14 @@ public class StrategyAStar implements IStrategy {
 
                 if (!isInList(openList, neighborPos)) {
                     openList.add(neighborNode);
-                    System.out.println("Added to openList: " + neighborPos);
+                    //System.out.println("Added to openList: " + neighborPos);
                 } else {
                     Node existingNode = getNodeFromList(openList, neighborPos);
                     if (tentativeGCost < existingNode.gCost) {
                         existingNode.gCost = tentativeGCost;
                         existingNode.fCost = tentativeGCost + existingNode.hCost;
                         existingNode.parent = currentNode;
-                        System.out.println("Updated node in openList: " + neighborPos);
+                        //System.out.println("Updated node in openList: " + neighborPos);
                     }
                 }
             }
@@ -144,7 +127,7 @@ public class StrategyAStar implements IStrategy {
 
     private void updateMapWithNewRoad(Map map, Position position) {
         map.getZones()[position.getX()][position.getY()].setInfrastructure(new Road());
-        System.out.println("Road constructed at: " + position);
+        //System.out.println("Road constructed at: " + position);
     }
 
     private boolean isInList(List<Node> list, Position pos) {
@@ -165,7 +148,7 @@ public class StrategyAStar implements IStrategy {
                 }
             }
         }
-        System.out.println("No constructible position adjacent to a road found from position: " + start);
+        //System.out.println("No constructible position adjacent to a road found from position: " + start);
         return null;
     }
 
@@ -177,7 +160,7 @@ public class StrategyAStar implements IStrategy {
             currentNode = currentNode.parent;
         }
         Collections.reverse(path);
-        path.forEach(System.out::println);
+        //path.forEach(System.out::println);
         return path.isEmpty() ? null : path.get(path.size() - 1);
     }
 }

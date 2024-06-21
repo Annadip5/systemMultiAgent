@@ -13,6 +13,7 @@ import org.multiagent_city.agents.buildings.School;
 import org.multiagent_city.controller.SimulatorController;
 import org.multiagent_city.model.Simulator;
 import org.multiagent_city.utils.FastNoiseLite;
+import org.multiagent_city.utils.strategy.StrategyAStar;
 import org.multiagent_city.utils.strategy.StrategyRandom;
 import org.multiagent_city.view.SimulatorView;
 import org.multiagent_city.view.MapView;
@@ -57,7 +58,7 @@ public class Boot extends Game {
 
         // Schedule infrastructure building
         scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(this::buildInfrastructures, 0, 100, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(this::buildInfrastructures, 0, 10, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -80,14 +81,12 @@ public class Boot extends Game {
     }
 
     public void buildInfrastructures() {
-        if (this.counter >= 100) {
+        if (this.counter >= 3000) {
             scheduler.shutdown();
             return;
         }
-        System.out.println("***********************");
-        System.out.println(this.counter);
         // Create agents
-        this.simulatorController.addRoad(new StrategyRandom());
+        this.simulatorController.addRoad(new StrategyAStar());
         // Add building with randomness
         int randomValue = random.nextInt(8);
         switch (randomValue) {
@@ -104,5 +103,6 @@ public class Boot extends Game {
     @Override
     public void dispose() {
         shapeRenderer.dispose();
+        scheduler.shutdown();
     }
 }

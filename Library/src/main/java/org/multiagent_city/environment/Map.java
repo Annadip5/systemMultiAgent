@@ -134,6 +134,9 @@ public class Map extends Observable{
         MapContext context = new MapContext(strategy);
         Road road = new Road();
         Position newPosition = context.execute(this, road);
+        System.out.println("newPosition");
+
+        System.out.println(newPosition);
 
         if(newPosition == null) {
             return;

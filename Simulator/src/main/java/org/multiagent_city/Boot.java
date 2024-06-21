@@ -51,18 +51,20 @@ public class Boot extends Game {
         simulatorController.setTownHallPosition(15,35);
 
         // Create agents
-        for (int i = 0; i < 500; i++) {
-            simulatorController.addRoad(new StrategyRandom());
+        for (int i = 0; i < 10; i++) {
+            System.out.println("***********************");
+            System.out.println(i);
+            simulatorController.addRoad(new StrategyAStar());
             // Add building with randomness
-            int randomValue = random.nextInt(8);
+            /*int randomValue = random.nextInt(8);
             switch (randomValue) {
-                case 0 -> simulatorController.addBuilding(new StrategyRandom(), Dwelling.class);
-                case 1 -> simulatorController.addBuilding(new StrategyRandom(), Hospital.class);
-                case 2 -> simulatorController.addBuilding(new StrategyRandom(), School.class);
-                case 3 -> simulatorController.addBuilding(new StrategyRandom(), Mall.class);
+                case 0 -> simulatorController.addBuilding(new StrategyAStar(), Dwelling.class);
+                case 1 -> simulatorController.addBuilding(new StrategyAStar(), Hospital.class);
+                case 2 -> simulatorController.addBuilding(new StrategyAStar(), School.class);
+                case 3 -> simulatorController.addBuilding(new StrategyAStar(), Mall.class);
                 default -> {
                 }
-            }
+            }*/
         }
 
         // Display the colors

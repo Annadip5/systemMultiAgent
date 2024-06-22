@@ -1,5 +1,6 @@
 package org.multiagent_city.agents;
 
+import org.multiagent_city.agents.buildings.TownHall;
 import org.multiagent_city.environment.Map;
 import org.multiagent_city.infrastructure.InfrastructureType;
 import org.multiagent_city.utils.Position;
@@ -143,23 +144,10 @@ public abstract class Infrastructure {
         int width = map.getWidth();
         int height = map.getHeight();
 
-        boolean isPresentUp = false, isPresentDown = false, isPresentLeft = false, isPresentRight = false;
-        if (isInMap(new Position(x, y + 1), width, height)) {
-            isPresentUp = map.getZones()[x][y + 1].getInfrastructure() instanceof Road;
-        }
-        // Check bottom position
-        if (isInMap(new Position(x, y - 1), width, height)) {
-            isPresentDown = map.getZones()[x][y - 1].getInfrastructure() instanceof Road;
-        }
-        // Check left position
-        if (isInMap(new Position(x - 1, y), width, height)) {
-            isPresentLeft = map.getZones()[x - 1][y].getInfrastructure() instanceof Road;
-        }
-        // Check right position
-        if (isInMap(new Position(x + 1, y), width, height)) {
-            isPresentRight = map.getZones()[x + 1][y].getInfrastructure() instanceof Road;
-        }
-
+        boolean isPresentUp = this.checkInfrastructurePresent(map,x,y-1, positionToCheck),
+                isPresentDown = this.checkInfrastructurePresent(map,x,y+1,positionToCheck),
+                isPresentLeft = this.checkInfrastructurePresent(map,x-1,y,positionToCheck),
+                isPresentRight = this.checkInfrastructurePresent(map,x+1,y,positionToCheck);
         return isPresentUp || isPresentDown || isPresentLeft || isPresentRight;
     }
 
@@ -204,6 +192,20 @@ public abstract class Infrastructure {
         infrastructuresToRemove.addAll(nestedInfrastructuresToRemove);*/
 
         return infrastructuresToRemove;
+    }
+    public boolean checkInfrastructurePresent (Map map,int x, int y, Position positionToCheck){
+        if (isInMap(new Position(x, y), map.getWidth(),map.getHeight())){
+            Infrastructure currentInfra = map.getZones()[positionToCheck.getX()][positionToCheck.getY()].getInfrastructure();
+            Infrastructure infra = map.getZones()[x][y].getInfrastructure();
+
+            if (currentInfra instanceof Road)
+            {
+            return infra instanceof Road || infra instanceof TownHall;
+            }
+            return infra instanceof Road;
+
+        }
+        return false;
     }
 
 

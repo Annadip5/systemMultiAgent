@@ -121,7 +121,7 @@ public class Boot extends Game {
         spriteBatch.end();
 
         // Update infrastructures at set intervals
-        if (elapsedTime >= updateInterval && this.counter <= 3000) {
+        if (elapsedTime >= updateInterval && this.counter <= 30000) {
             this.buildInfrastructures();
             this.counter++;
             elapsedTime = 0;

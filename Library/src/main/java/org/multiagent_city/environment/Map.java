@@ -213,18 +213,21 @@ public class Map extends Observable{
     }
     public void deleteInfrastructure(Infrastructure infrastructure){
         if (infrastructure instanceof Road) {
-            this.roads.remove(infrastructure);
+            infrastructure.repair(this, 2);
         }
         if (infrastructure instanceof Building) {
             this.buildings.remove(infrastructure);
+
+            Position infraPos = infrastructure.getPosition();
+            Zone zone = this.getZones()[infraPos.getX()][infraPos.getY()];
+            if(!(zone.getNature() instanceof Grass)) {
+                zone.setNature(new Grass());
+            }
+            if(!(zone.getZoneState() instanceof EmptyState)) {
+                zone.setZoneState(new EmptyState(zone));
+            }
         }
-        Position infraPos = infrastructure.getPosition();
-        Zone zone = this.getZones()[infraPos.getX()][infraPos.getY()];
-        if(!(zone.getZoneState() instanceof EmptyState)) {
-            zone.setZoneState(new EmptyState(zone));
-        }
-        System.out.println("-".repeat(50));
-        System.out.println("Removed : " + infrastructure.getType().getName() + " " + infrastructure.getPosition());
+
         this.notify(this, infrastructure.getPosition());
     }
     public void deleteInfrastructures(List<Infrastructure> list){

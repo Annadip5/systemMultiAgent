@@ -32,8 +32,8 @@ public class Boot extends Game {
     private ShapeRenderer shapeRenderer;
     private SpriteBatch spriteBatch;
     private MapView mapView;
-    private int mapWidth = 50;
-    private int mapHeight = 50;
+    private int mapWidth = 100;
+    private int mapHeight = 100;
     private int cellSize = 20;
     private SimulatorController simulatorController;
     private Random random = new Random();

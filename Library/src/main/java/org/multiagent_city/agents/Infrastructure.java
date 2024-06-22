@@ -2,8 +2,10 @@ package org.multiagent_city.agents;
 
 import org.multiagent_city.agents.buildings.TownHall;
 import org.multiagent_city.environment.Map;
+import org.multiagent_city.environment.Zone;
 import org.multiagent_city.infrastructure.InfrastructureType;
 import org.multiagent_city.utils.Position;
+import org.multiagent_city.zonestate.InConstructionState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -208,5 +210,9 @@ public abstract class Infrastructure {
         return false;
     }
 
-
+    public void repair(Map map, int repairDuration) {
+        this.currentUsury = 0;
+        Zone zone = map.getZones()[this.position.getX()][this.position.getY()];
+        zone.setZoneState(new InConstructionState(repairDuration, zone));
+    }
 }

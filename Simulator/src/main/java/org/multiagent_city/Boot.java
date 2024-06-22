@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import org.multiagent_city.agents.Building;
+import org.multiagent_city.agents.Infrastructure;
+import org.multiagent_city.agents.Road;
 import org.multiagent_city.agents.buildings.Dwelling;
 import org.multiagent_city.agents.buildings.Hospital;
 import org.multiagent_city.agents.buildings.Mall;
@@ -36,16 +39,19 @@ public class Boot extends Game {
     private int mapHeight = 50;
     private int cellSize = 20;
     private SimulatorController simulatorController;
-    private Random random = new Random();
     private int counter = 0;
     private float elapsedTime = 100;
     private float updateInterval = 0.010f;
+
+    private final Map<Class<? extends Infrastructure>, Integer> infrastructureWeights = new HashMap<>();
+    private final Random random = new Random();
 
     private Map<String, Texture> textureMap;
 
     @Override
     public void create() {
         this.loadTextures();
+        this.setInfrastructureWeights();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(true, mapWidth * cellSize, mapHeight * cellSize);
@@ -93,6 +99,15 @@ public class Boot extends Game {
         textureMap.put(org.multiagent_city.utils.Texture.inConstructionState, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.inConstructionState)));
     }
 
+    private void setInfrastructureWeights() {
+        // Define weights for each infrastructure type
+        infrastructureWeights.put(Road.class, 20);
+        infrastructureWeights.put(Dwelling.class, 10);
+        infrastructureWeights.put(Hospital.class, 1);
+        infrastructureWeights.put(School.class, 1);
+        infrastructureWeights.put(Mall.class, 3);
+    }
+
     @Override
     public void render() {
         float deltaTime = Gdx.graphics.getDeltaTime();
@@ -133,7 +148,7 @@ public class Boot extends Game {
         spriteBatch.end();
 
         // Update infrastructures at set intervals
-        if (elapsedTime >= updateInterval && this.counter <= 30000) {
+        if (elapsedTime >= updateInterval * deltaTime && this.counter <= 30000) {
             this.buildInfrastructures();
             this.counter++;
             elapsedTime = 0;
@@ -145,17 +160,25 @@ public class Boot extends Game {
 
     public void buildInfrastructures() {
         // Create agents
-        this.simulatorController.addRoad(new StrategyRandom(), 50, 100, 4);
-        // Add building with randomness
-        int randomValue = random.nextInt(8);
-        switch (randomValue) {
-            case 0 -> this.simulatorController.addBuilding(new StrategyAStar(), Dwelling.class, 100, 150, 2);
-            case 1 -> this.simulatorController.addBuilding(new StrategyAStar(), Hospital.class, 100, 150, 2);
-            case 2 -> this.simulatorController.addBuilding(new StrategyAStar(), School.class, 100, 150, 2);
-            case 3 -> this.simulatorController.addBuilding(new StrategyAStar(), Mall.class, 100, 150, 3);
-            default -> {
+        // Add road with weighted randomness
+        int totalWeight = infrastructureWeights.values().stream().mapToInt(Integer::intValue).sum();
+        int randomValue = random.nextInt(totalWeight);
+        int currentWeight = 0;
+
+        for (Map.Entry<Class<? extends Infrastructure>, Integer> entry : infrastructureWeights.entrySet()) {
+            currentWeight += entry.getValue();
+            if (randomValue < currentWeight) {
+                if (Road.class.isAssignableFrom(entry.getKey())) {
+                    this.simulatorController.addRoad(new StrategyRandom(), 50, 100, 4);
+                } else if (Building.class.isAssignableFrom(entry.getKey())) {
+                    // You need to cast entry.getKey() to the specific type you want
+                    Class<? extends Building> buildingClass = (Class<? extends Building>) entry.getKey();
+                    this.simulatorController.addBuilding(new StrategyAStar(), buildingClass, 100, 150, 2);
+                }
+                break;
             }
         }
+
         this.counter++;
     }
 

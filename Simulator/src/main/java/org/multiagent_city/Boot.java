@@ -39,7 +39,7 @@ public class Boot extends Game {
     private Random random = new Random();
     private int counter = 0;
     private float elapsedTime = 100;
-    private float updateInterval = 0.100f;
+    private float updateInterval = 0.010f;
 
     private Map<String, Texture> textureMap;
 

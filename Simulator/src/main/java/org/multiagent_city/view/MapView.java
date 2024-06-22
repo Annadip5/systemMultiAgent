@@ -7,6 +7,10 @@ import org.multiagent_city.environment.Map;
 import org.multiagent_city.model.MapCellUI;
 import org.multiagent_city.nature.Nature;
 import org.multiagent_city.utils.Position;
+import org.multiagent_city.zonestate.InConstructionState;
+import org.multiagent_city.zonestate.LockedState;
+import org.multiagent_city.zonestate.PruningState;
+import org.multiagent_city.zonestate.ZoneState;
 
 import java.awt.*;
 
@@ -64,7 +68,13 @@ public class MapView implements IObserver {
         }
         Infrastructure infra = map.getZones()[x][y].getInfrastructure();
         if (infra != null) {
-            this.uiMap[x][y] = new MapCellUI(infra.getType().getColor(), infra.getType().getTexture());
+            ZoneState zoneState = map.getZones()[x][y].getZoneState();
+            // Check the state
+            if (zoneState instanceof LockedState || zoneState instanceof PruningState || zoneState instanceof InConstructionState){
+                this.uiMap[x][y] = new MapCellUI(infra.getType().getColor(), zoneState.getTexture());
+            } else {
+                this.uiMap[x][y] = new MapCellUI(infra.getType().getColor(), infra.getType().getTexture());
+            }
         } else {
             Nature nature = map.getZones()[x][y].getNature();
             this.uiMap[x][y] = new MapCellUI(nature.getColor(), nature.getTexture());

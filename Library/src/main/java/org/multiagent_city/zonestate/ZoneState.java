@@ -46,7 +46,7 @@ public abstract class ZoneState {
 
         if(this.currentTime < 0 || this.currentTime == 0) {
             this.currentTime = 0;
-            this.nextState(0);
+            this.nextState(this.duration);
         }
     }
 

@@ -204,6 +204,9 @@ public class Map extends Observable{
                 infrastructure.addCurrentUsury(deltaTime);
             } else {
                 zoneState.removeCurrentTime(deltaTime);
+                if (zoneState.getCurrentTime() == 0) {
+                    this.notify(this, infraPos);
+                }
             }
         }
         this.deleteInfrastructures(infrastructuresToRemove);

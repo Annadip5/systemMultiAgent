@@ -44,21 +44,7 @@ public class Road extends Infrastructure {
             boolean isPresentLeft = map.getTownHall().getPosition().isEqual(positionLeft);
             boolean isPresentRight = map.getTownHall().getPosition().isEqual(positionRight);
 
-            if (isPresentUp) {
-                return true;
-            }
-            if (isPresentDown) {
-                return true;
-            }
-            if (isPresentLeft) {
-                return true;
-            }
-            if (isPresentRight) {
-                return true;
-            }
-            return false;
-
-
+            return isPresentUp || isPresentDown || isPresentLeft || isPresentRight;
         }
         Position positionUp = new Position(positionToCheck.getX(), positionToCheck.getY() + 1);
         Position positionDown = new Position(positionToCheck.getX(), positionToCheck.getY() - 1);
@@ -70,24 +56,29 @@ public class Road extends Infrastructure {
         boolean isPresentLeft = roadsPosition.stream().anyMatch(element -> element.isEqual(positionLeft));
         boolean isPresentRight = roadsPosition.stream().anyMatch(element -> element.isEqual(positionRight));
 
-        if ((isPresentUp && isPresentLeft) || (isPresentUp && isPresentRight) || (isPresentDown && isPresentLeft) || (isPresentDown && isPresentRight)) {
+        // Vérifie les diagonales pour éviter un carré 2x2 de routes
+        Position positionUpLeft = new Position(positionToCheck.getX() - 1, positionToCheck.getY() + 1);
+        Position positionUpRight = new Position(positionToCheck.getX() + 1, positionToCheck.getY() + 1);
+        Position positionDownLeft = new Position(positionToCheck.getX() - 1, positionToCheck.getY() - 1);
+        Position positionDownRight = new Position(positionToCheck.getX() + 1, positionToCheck.getY() - 1);
+
+        boolean isPresentUpLeft = roadsPosition.stream().anyMatch(element -> element.isEqual(positionUpLeft));
+        boolean isPresentUpRight = roadsPosition.stream().anyMatch(element -> element.isEqual(positionUpRight));
+        boolean isPresentDownLeft = roadsPosition.stream().anyMatch(element -> element.isEqual(positionDownLeft));
+        boolean isPresentDownRight = roadsPosition.stream().anyMatch(element -> element.isEqual(positionDownRight));
+
+        // Vérifie les combinaisons qui pourraient former un carré 2x2 de routes
+        if ((isPresentUp && isPresentLeft && isPresentUpLeft) ||
+                (isPresentUp && isPresentRight && isPresentUpRight) ||
+                (isPresentDown && isPresentLeft && isPresentDownLeft) ||
+                (isPresentDown && isPresentRight && isPresentDownRight) ||
+                (isPresentUp && isPresentDown && (isPresentLeft || isPresentRight)) ||
+                (isPresentLeft && isPresentRight && (isPresentUp || isPresentDown))) {
             return false;
         }
-        if (isPresentUp) {
-            return true;
-        }
-        if (isPresentDown) {
-            return true;
-        }
-        if (isPresentLeft) {
-            return true;
-        }
-        if (isPresentRight) {
-            return true;
-        }
-        return false;
 
-
+        // Vérifie si la position est adjacente à une route
+        return isPresentUp || isPresentDown || isPresentLeft || isPresentRight;
     }
 
 }

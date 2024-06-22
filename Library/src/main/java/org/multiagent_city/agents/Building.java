@@ -48,32 +48,8 @@ public abstract class Building extends Infrastructure {
     }
 
     @Override
-    public Boolean checkSpecificRule(Map map, Position positionToCheck){
-        int x = positionToCheck.getX();
-        int y = positionToCheck.getY();
-        int width = map.getWidth();
-        int height = map.getHeight();
-
-        boolean isPresentUp = false, isPresentDown = false, isPresentLeft = false, isPresentRight = false;
-
-        // Check top position
-        if (isInMap(new Position(x, y + 1), width, height)) {
-            isPresentUp = map.getZones()[x][y + 1].getInfrastructure() instanceof Road;
-        }
-        // Check bottom position
-        if (isInMap(new Position(x, y - 1), width, height)) {
-            isPresentDown = map.getZones()[x][y - 1].getInfrastructure() instanceof Road;
-        }
-        // Check left position
-        if (isInMap(new Position(x - 1, y), width, height)) {
-            isPresentLeft = map.getZones()[x - 1][y].getInfrastructure() instanceof Road;
-        }
-        // Check right position
-        if (isInMap(new Position(x + 1, y), width, height)) {
-            isPresentRight = map.getZones()[x + 1][y].getInfrastructure() instanceof Road;
-        }
-
-        return isPresentUp || isPresentDown || isPresentLeft || isPresentRight;
+    public Boolean checkSpecificRule(Map map, Position positionToCheck) {
+        return this.checkNeighborPosition(map,positionToCheck);
     }
 
 }

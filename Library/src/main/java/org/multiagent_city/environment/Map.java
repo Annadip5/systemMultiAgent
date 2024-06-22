@@ -175,7 +175,6 @@ public class Map extends Observable{
 
     public void checkZoneState(double deltaTime) {
         List<Infrastructure> infrastructures = new ArrayList<>();
-        List<Infrastructure> infrastructuresToRemove = new ArrayList<>();
         infrastructures.addAll(this.roads);
         infrastructures.addAll(this.buildings);
         if(!infrastructures.isEmpty()){
@@ -190,13 +189,11 @@ public class Map extends Observable{
                 }
                 if(infrastructure.getCurrentUsury() == infrastructure.getHealth() && zoneState instanceof Degradedstate) {
                     zoneState.nextState(0);
-                    infrastructuresToRemove.add(infrastructure);
-                    if (infrastructure instanceof Road) {
-                        this.roads.remove(infrastructure);
-                    }
-                    if (infrastructure instanceof Building) {
-                        this.buildings.remove(infrastructure);
-                    }
+                    this.deleteInfrastructure(infrastructure);
+
+                    List<Infrastructure> listToRemoveAloneInfrastructures =  infrastructure.isNotAlone(this, new ArrayList<>());
+                    this.deleteInfrastructures(listToRemoveAloneInfrastructures);
+
                 }
 
                 // Add usury
@@ -206,9 +203,19 @@ public class Map extends Observable{
             }
         }
 
-        // Remove infrastructure
-        for(Infrastructure infra: infrastructuresToRemove) {
 
+    }
+    public void deleteInfrastructure(Infrastructure infrastructure){
+        if (infrastructure instanceof Road) {
+            this.roads.remove(infrastructure);
+        }
+        if (infrastructure instanceof Building) {
+            this.buildings.remove(infrastructure);
+        }
+    }
+    public void deleteInfrastructures(List<Infrastructure> list){
+        for(Infrastructure i: list){
+            this.deleteInfrastructure(i);
         }
     }
 

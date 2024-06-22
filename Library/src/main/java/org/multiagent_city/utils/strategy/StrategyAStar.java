@@ -1,5 +1,6 @@
 package org.multiagent_city.utils.strategy;
 
+import org.multiagent_city.agents.Building;
 import org.multiagent_city.agents.Infrastructure;
 import org.multiagent_city.agents.Road;
 import org.multiagent_city.agents.buildings.TownHall;
@@ -155,5 +156,44 @@ public class StrategyAStar implements IStrategy {
         Collections.reverse(path);
         //path.forEach(System.out::println);
         return path.isEmpty() ? null : path.get(path.size() - 1);
+    }
+    public void checkAndRemoveInaccessibleRoadsAndBuildings(Map map, Infrastructure infrastructure) {
+        // Supprimer les routes inaccessibles
+        List<Road> roadsToRemove = new ArrayList<>();
+        for (Road road : map.getRoads()) {
+            if (!isReachable(map, road.getPosition(), map.getTownHall().getPosition())) {
+                roadsToRemove.add(road);
+            }
+        }
+        for (Road road : roadsToRemove) {
+            map.removeRoad(road);
+        }
+
+        // Supprimer les bâtiments inaccessibles
+        List<Building> buildingsToRemove = new ArrayList<>();
+        for (Building building : map.getBuildings()) {
+            if (!hasAccessibleRoad(map, building.getPosition())) {
+                buildingsToRemove.add(building);
+            }
+        }
+        for (Building building : buildingsToRemove) {
+            map.removeBuilding(building);
+        }
+    }
+
+    private boolean isReachable(Map map, Position start, Position goal) {
+        return findPath(map, null, start, goal) != null;
+    }
+
+    private boolean hasAccessibleRoad(Map map, Position buildingPosition) {
+        for (Position neighbor : getNeighbors(buildingPosition, map.getZones())) {
+            Zone zone = map.getZones()[neighbor.getX()][neighbor.getY()];
+            if (zone.getInfrastructure() instanceof Road) {
+                if (isReachable(map, neighbor, map.getTownHall().getPosition())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

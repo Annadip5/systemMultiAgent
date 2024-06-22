@@ -211,6 +211,25 @@ public class Map extends Observable{
 
         }
     }
+    public void removeBuilding(Building building) {
+        Position position = building.getPosition();
+        this.buildings.remove(building);
+        Zone zone = this.zones[position.getX()][position.getY()];
+        zone.setInfrastructure(null);
+        zone.getZoneState().resetState();
+        // Notify map changes
+        this.notify(this, position);
+    }
+
+    public void removeRoad(Road road) {
+        Position position = road.getPosition();
+        this.roads.remove(road);
+        Zone zone = this.zones[position.getX()][position.getY()];
+        zone.setInfrastructure(null);
+        zone.getZoneState().resetState();
+        // Notify map changes
+        this.notify(this, position);
+    }
 
     @Override
     public String toString() {

@@ -3,22 +3,32 @@ package org.multiagent_city.view;
 import org.multiagent_city.agents.buildings.TownHall;
 import org.multiagent_city.environment.IObserver;
 import org.multiagent_city.environment.Map;
+import org.multiagent_city.model.MapCellUI;
 import org.multiagent_city.utils.Position;
 
 import java.awt.*;
 
 public class MapView implements IObserver {
-    private Color[][] uiMap;
+    private Map map;
+    private MapCellUI[][] uiMap;
 
-    public MapView(int mapWidth, int mapHeight) {
-        uiMap = new Color[mapHeight][mapWidth];
+    public MapView(Map map) {
+        this.map = map;
+        this.uiMap = new MapCellUI[map.getHeight()][map.getWidth()];
     }
 
-    public Color[][] getUiMap() {
+    public Map getMap() {
+        return map;
+    }
+
+    public MapCellUI[][] getUiMap() {
         return uiMap;
     }
 
-    public void setUiMap(Color[][] uiMap) {
+    public void setUiMap(Map map) {
+        this.map = map;
+    }
+    public void setUiMap(MapCellUI[][] uiMap) {
         this.uiMap = uiMap;
     }
 
@@ -29,7 +39,7 @@ public class MapView implements IObserver {
             // Update the specific area
             int positionX = updatedPosition.getX();
             int positionY = updatedPosition.getY();
-            this.uiMap[positionX][positionY] = this.getZoneColor(map, positionX, positionY);
+            this.uiMap[positionX][positionY].setColor(this.getZoneColor(map, positionX, positionY));
             return;
         }
         // Update the all map
@@ -37,10 +47,10 @@ public class MapView implements IObserver {
         int mapWidth = map.getWidth();
 
         // Display the colors
-        this.uiMap = new Color[mapHeight][mapWidth];
+        this.uiMap = new MapCellUI[mapHeight][mapWidth];
         for (int x = 0; x < mapHeight; x++) {
             for (int y = 0; y < mapWidth; y++) {
-                this.uiMap[x][y] = this.getZoneColor(map, x, y);
+                this.uiMap[x][y] = new MapCellUI(this.getZoneColor(map, x, y), map.getZones()[x][y].getNature().getTexture());
             }
         }
     }

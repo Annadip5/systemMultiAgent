@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import org.multiagent_city.agents.buildings.Dwelling;
 import org.multiagent_city.agents.buildings.Hospital;
@@ -18,6 +20,8 @@ import org.multiagent_city.utils.strategy.StrategyRandom;
 import org.multiagent_city.view.SimulatorView;
 import org.multiagent_city.view.MapView;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -26,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class Boot extends Game {
     private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
+    private SpriteBatch spriteBatch;
     private MapView mapView;
     private int mapWidth = 50;
     private int mapHeight = 50;
@@ -35,16 +40,22 @@ public class Boot extends Game {
     private int counter = 0;
     private float elapsedTime = 100;
     private float updateInterval = 0.010f;
+
+    private Map<String, Texture> textureMap;
+
     @Override
     public void create() {
+        this.loadTextures();
+
         camera = new OrthographicCamera();
         camera.setToOrtho(true, mapWidth * cellSize, mapHeight * cellSize);
         shapeRenderer = new ShapeRenderer();
+        spriteBatch = new SpriteBatch();
 
         Simulator simulator = new Simulator();
         SimulatorView simulatorView = new SimulatorView();
         this.simulatorController = new SimulatorController(simulatorView, simulator);
-        this.mapView = new MapView(mapWidth, mapHeight);
+        this.mapView = new MapView(simulator.getMap());
         this.simulatorController.addObserver(this.mapView);
         this.simulatorController.setMapSize(mapWidth,mapHeight);
 
@@ -59,6 +70,15 @@ public class Boot extends Game {
 
     }
 
+    private void loadTextures() {
+        textureMap = new HashMap<>();
+        textureMap.put(org.multiagent_city.utils.Texture.water, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.water)));
+        textureMap.put(org.multiagent_city.utils.Texture.rock, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.rock)));
+        textureMap.put(org.multiagent_city.utils.Texture.tree, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.tree)));
+        textureMap.put(org.multiagent_city.utils.Texture.bush, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.bush)));
+        textureMap.put(org.multiagent_city.utils.Texture.grass, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.grass)));
+    }
+
     @Override
     public void render() {
         float deltaTime = Gdx.graphics.getDeltaTime();
@@ -68,17 +88,37 @@ public class Boot extends Game {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         shapeRenderer.setProjectionMatrix(camera.combined);
+        spriteBatch.setProjectionMatrix(camera.combined);
 
+        // Draw the background colors first
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int x = 0; x < mapHeight; x++) {
             for (int y = 0; y < mapWidth; y++) {
-                java.awt.Color awtColor = mapView.getUiMap()[x][y];
+                java.awt.Color awtColor = mapView.getUiMap()[x][y].getColor();
                 Color color = new Color(awtColor.getRed() / 255f, awtColor.getGreen() / 255f, awtColor.getBlue() / 255f, 1);
                 shapeRenderer.setColor(color);
                 shapeRenderer.rect(y * cellSize, x * cellSize, cellSize, cellSize);
             }
         }
         shapeRenderer.end();
+
+        // Draw the textures on top of the background colors
+        spriteBatch.begin();
+        for (int x = 0; x < mapHeight; x++) {
+            for (int y = 0; y < mapWidth; y++) {
+                if (this.mapView.getMap().getZones()[x][y].getInfrastructure() == null) {
+                    Texture texture = this.textureMap.get(mapView.getUiMap()[x][y].getTexture());
+                    if (texture != null) {
+                        //spriteBatch.draw(texture, y * cellSize, x * cellSize, cellSize, cellSize);
+                        float originX = cellSize / 2;
+                        float originY = cellSize / 2;
+                        float rotation = 180.0f;
+                        spriteBatch.draw(texture, y * cellSize, x * cellSize, originX, originY, cellSize, cellSize, 1, 1, rotation, 0, 0, texture.getWidth(), texture.getHeight(), true, false);
+                    }
+                }
+            }
+        }
+        spriteBatch.end();
 
         // Update infrastructures at set intervals
         if (elapsedTime >= updateInterval && this.counter <= 3000) {
@@ -110,5 +150,9 @@ public class Boot extends Game {
     @Override
     public void dispose() {
         shapeRenderer.dispose();
+        spriteBatch.dispose();
+        for (Texture texture : textureMap.values()) {
+            texture.dispose();
+        }
     }
 }

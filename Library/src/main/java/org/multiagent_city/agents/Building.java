@@ -13,8 +13,8 @@ public abstract class Building extends Infrastructure {
     private int capacity;
     protected int spawnProbability;
 
-    public Building(InfrastructureType type) {
-        super(type);
+    public Building(InfrastructureType type, int minHealth, int maxHealth, float usuryCoefficient) {
+        super(type, minHealth, maxHealth, usuryCoefficient);
     }
 
     public Building(InfrastructureType type, Position position) {

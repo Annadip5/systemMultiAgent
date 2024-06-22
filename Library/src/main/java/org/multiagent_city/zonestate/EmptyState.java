@@ -12,8 +12,8 @@ public class EmptyState extends ZoneState{
     }
 
     @Override
-    public void nextState() {
-        LockedState state = new LockedState(this.duration, this.zone);
+    public void nextState(int duration) {
+        LockedState state = new LockedState(duration, this.zone);
         this.zone.setZoneState(state);
     }
 }

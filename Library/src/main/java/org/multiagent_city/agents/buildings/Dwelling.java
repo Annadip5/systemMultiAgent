@@ -8,8 +8,8 @@ import org.multiagent_city.utils.Texture;
 import java.awt.*;
 
 public class Dwelling extends Building {
-    public Dwelling(){
-        super(new InfrastructureType("Dwelling", new Color(255, 165, 0), Texture.dwelling));
+    public Dwelling(int minHealth, int maxHealth, float usuryCoefficient){
+        super(new InfrastructureType("Dwelling", new Color(255, 165, 0), Texture.dwelling), minHealth, maxHealth, usuryCoefficient);
     }
     public Dwelling(InfrastructureType type, Position position) {
         super(type, position);
@@ -21,14 +21,5 @@ public class Dwelling extends Building {
 
     public Dwelling(InfrastructureType type, float usuryCoefficient, int minHealth, int maxHealth, Position position, int capacity, int spawnProbability) {
         super(type, usuryCoefficient, minHealth, maxHealth, position, capacity,spawnProbability);
-    }
-
-    @Override
-    public String toString() {
-        return "Dwelling{" +
-                "usuryCoefficient=" + usuryCoefficient +
-                ", minHealth=" + minHealth +
-                ", maxHealth=" + maxHealth +
-                '}';
     }
 }

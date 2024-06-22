@@ -10,7 +10,10 @@ import org.multiagent_city.utils.FastNoiseLite;
 import org.multiagent_city.utils.NatureMap;
 import org.multiagent_city.utils.Position;
 import org.multiagent_city.utils.strategy.IStrategy;
+import org.multiagent_city.zonestate.BuildedState;
+import org.multiagent_city.zonestate.Degradedstate;
 import org.multiagent_city.zonestate.LockedState;
+import org.multiagent_city.zonestate.ZoneState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -125,15 +128,17 @@ public class Map extends Observable{
         // Set the infrastructure for the Zone
         zone.setInfrastructure(infrastructure);
         // Set the state for the Zone
-        zone.setZoneState(new LockedState(1, zone));
+        zone.getZoneState().nextState(3);
         // Notify map changes
         this.notify(this, position);
     }
 
-    public void addBuilding(IStrategy strategy, Class<? extends Building> buildingClass){
+    public void addBuilding(IStrategy strategy, Class<? extends Building> buildingClass, int minHealth, int maxHealth, float usuryCoefficient){
         MapContext context = new MapContext(strategy);
         try {
-            Building building = buildingClass.getDeclaredConstructor().newInstance();
+            Building building = buildingClass
+                    .getDeclaredConstructor(int.class, int.class, float.class)
+                    .newInstance(minHealth, maxHealth, usuryCoefficient);
             Position newPosition = context.execute(this, building);
 
             if(newPosition == null) {
@@ -151,13 +156,10 @@ public class Map extends Observable{
             e.printStackTrace();
         }
     }
-    public void addRoad(IStrategy strategy){
+    public void addRoad(IStrategy strategy, int minHealth, int maxHealth, float usuryCoefficient){
         MapContext context = new MapContext(strategy);
-        Road road = new Road();
+        Road road = new Road(minHealth, maxHealth, usuryCoefficient);
         Position newPosition = context.execute(this, road);
-        System.out.println("newPosition");
-
-        System.out.println(newPosition);
 
         if(newPosition == null) {
             return;
@@ -169,6 +171,45 @@ public class Map extends Observable{
         // Add the road to the zone
         this.setZone(newPosition, road);
         System.out.println("Road " + newPosition);
+    }
+
+    public void checkZoneState(double deltaTime) {
+        List<Infrastructure> infrastructures = new ArrayList<>();
+        List<Infrastructure> infrastructuresToRemove = new ArrayList<>();
+        infrastructures.addAll(this.roads);
+        infrastructures.addAll(this.buildings);
+        if(!infrastructures.isEmpty()){
+            System.out.println(infrastructures.get(0));
+        }
+        for (Infrastructure infrastructure: infrastructures) {
+            Position infraPos = infrastructure.getPosition();
+            ZoneState zoneState = this.zones[infraPos.getX()][infraPos.getY()].getZoneState();
+            if(zoneState instanceof BuildedState || zoneState instanceof Degradedstate) {
+                if(infrastructure.getCurrentUsury() < (double) infrastructure.getHealth() / 2 && zoneState instanceof BuildedState) {
+                    zoneState.nextState(0);
+                }
+                if(infrastructure.getCurrentUsury() == infrastructure.getHealth() && zoneState instanceof Degradedstate) {
+                    zoneState.nextState(0);
+                    infrastructuresToRemove.add(infrastructure);
+                    if (infrastructure instanceof Road) {
+                        this.roads.remove(infrastructure);
+                    }
+                    if (infrastructure instanceof Building) {
+                        this.buildings.remove(infrastructure);
+                    }
+                }
+
+                // Add usury
+                infrastructure.addCurrentUsury(deltaTime);
+            } else {
+                zoneState.removeCurrentTime(deltaTime);
+            }
+        }
+
+        // Remove infrastructure
+        for(Infrastructure infra: infrastructuresToRemove) {
+
+        }
     }
 
     @Override

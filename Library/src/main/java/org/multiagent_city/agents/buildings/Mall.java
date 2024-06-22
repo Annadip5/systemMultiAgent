@@ -8,8 +8,8 @@ import org.multiagent_city.utils.Texture;
 import java.awt.*;
 
 public class Mall extends Building {
-    public Mall(){
-        super(new InfrastructureType("Mall", new Color(123, 104, 238), Texture.mall));
+    public Mall(int minHealth, int maxHealth, float usuryCoefficient){
+        super(new InfrastructureType("Mall", new Color(123, 104, 238), Texture.mall), minHealth, maxHealth, usuryCoefficient);
     }
     public Mall(InfrastructureType type, Position position) {
         super(type, position);

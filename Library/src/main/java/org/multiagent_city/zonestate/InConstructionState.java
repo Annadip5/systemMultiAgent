@@ -8,7 +8,8 @@ public class InConstructionState extends ZoneState{
     }
 
     @Override
-    public void nextState() {
-
+    public void nextState(int duration) {
+        BuildedState state = new BuildedState(duration, this.zone);
+        this.zone.setZoneState(state);
     }
 }

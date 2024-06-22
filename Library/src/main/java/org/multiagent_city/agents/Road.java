@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 
 public class Road extends Infrastructure {
 
-    public Road() {
-        super(InfrastructureFactory.getInfrastructureType("Road", new Color(0,0,0), Texture.road));
+    public Road(int minHealth, int maxHealth, float usuryCoefficient) {
+        super(InfrastructureFactory.getInfrastructureType("Road", new Color(0,0,0), Texture.road), minHealth, maxHealth, usuryCoefficient);
     }
 
     public Road(float usuryCoefficient, int minHealth, int maxHealth, Position position) {

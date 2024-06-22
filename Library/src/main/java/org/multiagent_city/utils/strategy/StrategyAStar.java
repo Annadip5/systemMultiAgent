@@ -38,7 +38,6 @@ public class StrategyAStar implements IStrategy {
             if (goal != null) {
                 Position newRoadPosition = findPath(map, infrastructure, townHallPosition, goal);
                 if (newRoadPosition != null) {
-                    updateMapWithNewRoad(map, newRoadPosition);
                     positionQueue.add(newRoadPosition);
                     return newRoadPosition;
                 }
@@ -57,7 +56,6 @@ public class StrategyAStar implements IStrategy {
                 System.out.println("Goal Node: " + goal);
                 Position newRoadPosition = findPath(map, infrastructure, currentPos, goal);
                 if (newRoadPosition != null && infrastructure.checkBuildRule(map, newRoadPosition)) {
-                    updateMapWithNewRoad(map, newRoadPosition);
                     positionQueue.add(newRoadPosition);
                     return newRoadPosition;
                 }
@@ -123,11 +121,6 @@ public class StrategyAStar implements IStrategy {
         if (y < zones[0].length - 1) neighbors.add(new Position(x, y + 1));
 
         return neighbors;
-    }
-
-    private void updateMapWithNewRoad(Map map, Position position) {
-        map.getZones()[position.getX()][position.getY()].setInfrastructure(new Road());
-        //System.out.println("Road constructed at: " + position);
     }
 
     private boolean isInList(List<Node> list, Position pos) {

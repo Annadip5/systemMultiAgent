@@ -9,12 +9,12 @@ public class LockedState extends ZoneState{
         super(duration, zone);
     }
     @Override
-    public void nextState() {
+    public void nextState(int duration) {
         if ( (this.zone.getNature() instanceof Tree) || (this.zone.getNature() instanceof Bush) ){
-            PruningState state = new PruningState(this.duration, this.zone);
+            PruningState state = new PruningState(duration, this.zone);
             this.zone.setZoneState(state);
         } else{
-            InConstructionState state = new InConstructionState(this.duration, this.zone);
+            InConstructionState state = new InConstructionState(duration, this.zone);
             this.zone.setZoneState(state);
         }
 

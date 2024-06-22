@@ -7,8 +7,8 @@ public class PruningState extends ZoneState{
         super(duration, zone);
     }
     @Override
-    public void nextState() {
-        InConstructionState state = new InConstructionState(this.duration, this.zone);
+    public void nextState(int duration) {
+        InConstructionState state = new InConstructionState(duration, this.zone);
         this.zone.setZoneState(state);
     }
 }

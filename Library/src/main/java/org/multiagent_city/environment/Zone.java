@@ -55,6 +55,10 @@ public class Zone {
 
     @Override
     public String toString() {
-        return  nature.getName().substring(0,1) ;
+        return "Zone{" +
+                "zoneState=" + zoneState +
+                ", infrastructure=" + infrastructure +
+                ", nature=" + nature.getName().substring(0,1) +
+                '}';
     }
 }

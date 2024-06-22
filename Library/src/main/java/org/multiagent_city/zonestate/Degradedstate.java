@@ -7,8 +7,8 @@ public class Degradedstate extends ZoneState{
         super(duration, zone);
     }
     @Override
-    public void nextState() {
-        EmptyState state = new EmptyState(this.duration, this.zone);
+    public void nextState(int duration) {
+        EmptyState state = new EmptyState(duration, this.zone);
         this.zone.setZoneState(state);
         deleteInfrastructure();
     }

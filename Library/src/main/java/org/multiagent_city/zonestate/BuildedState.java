@@ -8,9 +8,8 @@ public class BuildedState extends ZoneState{
         super(duration, zone);
     }
     @Override
-    public void nextState() {
-        Degradedstate state = new Degradedstate(this.duration, this.zone);
+    public void nextState(int duration) {
+        Degradedstate state = new Degradedstate(duration, this.zone);
         this.zone.setZoneState(state);
-
     }
 }

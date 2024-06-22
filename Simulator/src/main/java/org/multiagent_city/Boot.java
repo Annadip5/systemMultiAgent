@@ -33,7 +33,8 @@ public class Boot extends Game {
     private SimulatorController simulatorController;
     private Random random = new Random();
     private int counter = 0;
-    private ScheduledExecutorService scheduler;
+    private float elapsedTime = 100;
+    private float updateInterval = 0.010f;
     @Override
     public void create() {
         camera = new OrthographicCamera();
@@ -56,13 +57,13 @@ public class Boot extends Game {
         this.simulatorController.createSimulation(noise, blurRadius);
         this.simulatorController.setTownHallPosition(15,35);
 
-        // Schedule infrastructure building
-        scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(this::buildInfrastructures, 0, 10, TimeUnit.MILLISECONDS);
     }
 
     @Override
     public void render() {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        elapsedTime += deltaTime;
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
@@ -78,22 +79,28 @@ public class Boot extends Game {
             }
         }
         shapeRenderer.end();
+
+        // Update infrastructures at set intervals
+        if (elapsedTime >= updateInterval && this.counter <= 3000) {
+            this.buildInfrastructures();
+            this.counter++;
+            elapsedTime = 0;
+        }
+
+        // Update the map
+        this.simulatorController.updateView(deltaTime);
     }
 
     public void buildInfrastructures() {
-        if (this.counter >= 3000) {
-            scheduler.shutdown();
-            return;
-        }
         // Create agents
-        this.simulatorController.addRoad(new StrategyAStar());
+        this.simulatorController.addRoad(new StrategyAStar(), 50, 100, 7);
         // Add building with randomness
         int randomValue = random.nextInt(8);
         switch (randomValue) {
-            case 0 -> this.simulatorController.addBuilding(new StrategyRandom(), Dwelling.class);
-            case 1 -> this.simulatorController.addBuilding(new StrategyRandom(), Hospital.class);
-            case 2 -> this.simulatorController.addBuilding(new StrategyRandom(), School.class);
-            case 3 -> this.simulatorController.addBuilding(new StrategyRandom(), Mall.class);
+            case 0 -> this.simulatorController.addBuilding(new StrategyRandom(), Dwelling.class, 100, 150, 2);
+            case 1 -> this.simulatorController.addBuilding(new StrategyRandom(), Hospital.class, 100, 150, 2);
+            case 2 -> this.simulatorController.addBuilding(new StrategyRandom(), School.class, 100, 150, 2);
+            case 3 -> this.simulatorController.addBuilding(new StrategyRandom(), Mall.class, 100, 150, 3);
             default -> {
             }
         }
@@ -103,6 +110,5 @@ public class Boot extends Game {
     @Override
     public void dispose() {
         shapeRenderer.dispose();
-        scheduler.shutdown();
     }
 }

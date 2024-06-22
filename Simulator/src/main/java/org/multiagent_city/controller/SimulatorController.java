@@ -50,19 +50,20 @@ public class SimulatorController {
 
     }
 
-    public void addRoad(IStrategy strategy) {
-        this.simulator.getMap().addRoad(strategy);
+    public void addRoad(IStrategy strategy, int minHealth, int maxHealth, float usuryCoefficient) {
+        this.simulator.getMap().addRoad(strategy, minHealth, maxHealth, usuryCoefficient);
     }
-    public void addBuilding(IStrategy strategy, Class<? extends Building> buildingClass) {
-        this.simulator.getMap().addBuilding(strategy, buildingClass);
+    public void addBuilding(IStrategy strategy, Class<? extends Building> buildingClass, int minHealth, int maxHealth, float usuryCoefficient) {
+        this.simulator.getMap().addBuilding(strategy, buildingClass, minHealth, maxHealth, usuryCoefficient);
     }
 
     public void addObserver(IObserver observer) {
         this.simulator.getMap().addObserver(observer);
     }
 
-    public void updateView(){
-        this.view.printMap(this.simulator.getMap());
+    public void updateView(double deltaTime){
+        this.simulator.getMap().checkZoneState(deltaTime);
+        //this.view.printMap(this.simulator.getMap());
     }
 
 

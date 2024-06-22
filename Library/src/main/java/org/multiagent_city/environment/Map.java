@@ -193,7 +193,6 @@ public class Map extends Observable{
 
                     List<Infrastructure> listToRemoveAloneInfrastructures =  infrastructure.isNotAlone(this, new ArrayList<>());
                     this.deleteInfrastructures(listToRemoveAloneInfrastructures);
-
                 }
 
                 // Add usury
@@ -202,15 +201,15 @@ public class Map extends Observable{
                 zoneState.removeCurrentTime(deltaTime);
             }
         }
-
-
     }
     public void deleteInfrastructure(Infrastructure infrastructure){
         if (infrastructure instanceof Road) {
             this.roads.remove(infrastructure);
+            this.notify(this, infrastructure.getPosition());
         }
         if (infrastructure instanceof Building) {
             this.buildings.remove(infrastructure);
+            this.notify(this, infrastructure.getPosition());
         }
     }
     public void deleteInfrastructures(List<Infrastructure> list){

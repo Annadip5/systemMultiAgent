@@ -39,7 +39,7 @@ public class MapView implements IObserver {
             // Update the specific area
             int positionX = updatedPosition.getX();
             int positionY = updatedPosition.getY();
-            this.uiMap[positionX][positionY].setColor(this.getZoneColor(map, positionX, positionY));
+            this.updateUiMap(map, positionX, positionY);
             return;
         }
         // Update the all map
@@ -50,8 +50,16 @@ public class MapView implements IObserver {
         this.uiMap = new MapCellUI[mapHeight][mapWidth];
         for (int x = 0; x < mapHeight; x++) {
             for (int y = 0; y < mapWidth; y++) {
-                this.uiMap[x][y] = new MapCellUI(this.getZoneColor(map, x, y), map.getZones()[x][y].getNature().getTexture());
+                this.updateUiMap(map, x, y);
             }
+        }
+    }
+
+    private void updateUiMap(Map map, int x, int y) {
+        if (map.getZones()[x][y].getInfrastructure() != null) {
+            this.uiMap[x][y] = new MapCellUI(this.getZoneColor(map, x, y), null);
+        } else {
+            this.uiMap[x][y] = new MapCellUI(this.getZoneColor(map, x, y), map.getZones()[x][y].getNature().getTexture());
         }
     }
 

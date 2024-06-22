@@ -1,16 +1,19 @@
 package org.multiagent_city.zonestate;
 
 import org.multiagent_city.environment.Zone;
+import org.multiagent_city.utils.Texture;
 
 public abstract class ZoneState {
     protected Zone zone;
     protected int duration;
     protected double currentTime;
+    protected String texture;
 
-    public ZoneState(int duration, Zone zone) {
+    public ZoneState(int duration, Zone zone, String texture) {
         this.duration = duration;
         this.currentTime = duration;
         this.zone = zone;
+        this.texture = texture;
     }
 
     // Getters & Setters
@@ -45,6 +48,14 @@ public abstract class ZoneState {
             this.currentTime = 0;
             this.nextState(0);
         }
+    }
+
+    public String getTexture() {
+        return texture;
+    }
+
+    public void setTexture(String texture) {
+        this.texture = texture;
     }
 
     // Methods

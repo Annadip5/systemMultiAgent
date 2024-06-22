@@ -23,4 +23,10 @@ public class Texture {
     public static final String grass = nature + "grass.png";
     public static final String bush = nature + "bush.png";
     public static final String tree = nature + "tree.png";
+
+    // ZoneState
+    public static final String pruningState = zonestates + "pruningState.png";
+    public static final String lockedState = zonestates + "lockedState.png";
+    public static final String inConstructionState = zonestates + "inConstructionState.png";
+
 }

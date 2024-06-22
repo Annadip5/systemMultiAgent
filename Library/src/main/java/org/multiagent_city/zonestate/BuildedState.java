@@ -5,7 +5,7 @@ import org.multiagent_city.environment.Zone;
 public class BuildedState extends ZoneState{
 
     public BuildedState(int duration, Zone zone) {
-        super(duration, zone);
+        super(duration, zone, null);
     }
     @Override
     public void nextState(int duration) {

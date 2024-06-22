@@ -5,10 +5,10 @@ import org.multiagent_city.environment.Zone;
 public class EmptyState extends ZoneState{
 
     public EmptyState(Zone zone){
-        super(0, zone);
+        super(0, zone, null);
     }
     public EmptyState(int duration, Zone zone) {
-        super(duration, zone);
+        super(duration, zone, null);
     }
 
     @Override

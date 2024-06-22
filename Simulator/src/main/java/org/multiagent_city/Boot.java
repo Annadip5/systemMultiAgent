@@ -32,8 +32,8 @@ public class Boot extends Game {
     private ShapeRenderer shapeRenderer;
     private SpriteBatch spriteBatch;
     private MapView mapView;
-    private int mapWidth = 100;
-    private int mapHeight = 100;
+    private int mapWidth = 50;
+    private int mapHeight = 50;
     private int cellSize = 20;
     private SimulatorController simulatorController;
     private Random random = new Random();
@@ -145,14 +145,14 @@ public class Boot extends Game {
 
     public void buildInfrastructures() {
         // Create agents
-        this.simulatorController.addRoad(new StrategyAStar(), 50, 100, 7);
+        this.simulatorController.addRoad(new StrategyRandom(), 50, 100, 4);
         // Add building with randomness
         int randomValue = random.nextInt(8);
         switch (randomValue) {
-            case 0 -> this.simulatorController.addBuilding(new StrategyRandom(), Dwelling.class, 100, 150, 2);
-            case 1 -> this.simulatorController.addBuilding(new StrategyRandom(), Hospital.class, 100, 150, 2);
-            case 2 -> this.simulatorController.addBuilding(new StrategyRandom(), School.class, 100, 150, 2);
-            case 3 -> this.simulatorController.addBuilding(new StrategyRandom(), Mall.class, 100, 150, 3);
+            case 0 -> this.simulatorController.addBuilding(new StrategyAStar(), Dwelling.class, 100, 150, 2);
+            case 1 -> this.simulatorController.addBuilding(new StrategyAStar(), Hospital.class, 100, 150, 2);
+            case 2 -> this.simulatorController.addBuilding(new StrategyAStar(), School.class, 100, 150, 2);
+            case 3 -> this.simulatorController.addBuilding(new StrategyAStar(), Mall.class, 100, 150, 3);
             default -> {
             }
         }

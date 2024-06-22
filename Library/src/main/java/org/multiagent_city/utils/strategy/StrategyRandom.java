@@ -6,28 +6,29 @@ import org.multiagent_city.environment.Zone;
 import org.multiagent_city.utils.Position;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class StrategyRandom implements IStrategy {
     public Position execute(Map map, Infrastructure infrastructure ) {
         Random random = new Random();
-        Position pos = new Position();
-        ArrayList<Position> positions = new ArrayList<Position>();
+        Position pos;
+        List<Position> possiblePositions = new ArrayList<>();
+        for(int x = 0; x < map.getHeight(); x++){
+            for(int y = 0; y < map.getWidth(); y++){
+                possiblePositions.add(new Position(x,y));
+            }
+        }
+
         do {
-            if( positions.size() == map.getHeight()* map.getWidth()){
+            if( possiblePositions.size() == 0){
                 System.out.println("all positions are not buildable");
                 return null;
             }
-            do {
-                int X = random.nextInt(map.getWidth());
-                int Y = random.nextInt(map.getHeight());
-                pos =  new Position(X,Y);
-            }
-            while (pos.isContained(positions) );
+            int randomIndex = random.nextInt(possiblePositions.size());
+            pos = possiblePositions.get(randomIndex);
 
-            positions.add(pos);
-
-
+            possiblePositions.remove(pos);
         }
         while(!infrastructure.checkBuildRule(map,pos));
         return pos;

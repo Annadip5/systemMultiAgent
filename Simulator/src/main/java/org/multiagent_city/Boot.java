@@ -39,7 +39,7 @@ public class Boot extends Game {
     private Random random = new Random();
     private int counter = 0;
     private float elapsedTime = 100;
-    private float updateInterval = 0.010f;
+    private float updateInterval = 0.100f;
 
     private Map<String, Texture> textureMap;
 
@@ -72,6 +72,15 @@ public class Boot extends Game {
 
     private void loadTextures() {
         textureMap = new HashMap<>();
+        // Infrastructures
+        textureMap.put(org.multiagent_city.utils.Texture.road, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.road)));
+        textureMap.put(org.multiagent_city.utils.Texture.dwelling, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.dwelling)));
+        textureMap.put(org.multiagent_city.utils.Texture.school, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.school)));
+        textureMap.put(org.multiagent_city.utils.Texture.hospital, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.hospital)));
+        textureMap.put(org.multiagent_city.utils.Texture.mall, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.mall)));
+        textureMap.put(org.multiagent_city.utils.Texture.townHall, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.townHall)));
+
+        // Nature
         textureMap.put(org.multiagent_city.utils.Texture.water, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.water)));
         textureMap.put(org.multiagent_city.utils.Texture.rock, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.rock)));
         textureMap.put(org.multiagent_city.utils.Texture.tree, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.tree)));
@@ -106,15 +115,13 @@ public class Boot extends Game {
         spriteBatch.begin();
         for (int x = 0; x < mapHeight; x++) {
             for (int y = 0; y < mapWidth; y++) {
-                if (this.mapView.getMap().getZones()[x][y].getInfrastructure() == null) {
-                    Texture texture = this.textureMap.get(mapView.getUiMap()[x][y].getTexture());
-                    if (texture != null) {
-                        //spriteBatch.draw(texture, y * cellSize, x * cellSize, cellSize, cellSize);
-                        float originX = cellSize / 2;
-                        float originY = cellSize / 2;
-                        float rotation = 180.0f;
-                        spriteBatch.draw(texture, y * cellSize, x * cellSize, originX, originY, cellSize, cellSize, 1, 1, rotation, 0, 0, texture.getWidth(), texture.getHeight(), true, false);
-                    }
+                Texture texture = this.textureMap.get(mapView.getUiMap()[x][y].getTexture());
+                if (texture != null) {
+                    //spriteBatch.draw(texture, y * cellSize, x * cellSize, cellSize, cellSize);
+                    float originX = cellSize / 2;
+                    float originY = cellSize / 2;
+                    float rotation = 180.0f;
+                    spriteBatch.draw(texture, y * cellSize, x * cellSize, originX, originY, cellSize, cellSize, 1, 1, rotation, 0, 0, texture.getWidth(), texture.getHeight(), true, false);
                 }
             }
         }

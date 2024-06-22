@@ -52,8 +52,8 @@ public class StrategyAStar implements IStrategy {
             Position currentPos = positionQueue.poll();
             Position goal = findConstructibleAdjacentPosition(map, currentPos, infrastructure);
             if (goal != null) {
-                System.out.println("Start Node: " + currentPos);
-                System.out.println("Goal Node: " + goal);
+                //System.out.println("Start Node: " + currentPos);
+                //System.out.println("Goal Node: " + goal);
                 Position newRoadPosition = findPath(map, infrastructure, currentPos, goal);
                 if (newRoadPosition != null && infrastructure.checkBuildRule(map, newRoadPosition)) {
                     positionQueue.add(newRoadPosition);

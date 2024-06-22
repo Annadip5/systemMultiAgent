@@ -1,9 +1,11 @@
 package org.multiagent_city.view;
 
+import org.multiagent_city.agents.Infrastructure;
 import org.multiagent_city.agents.buildings.TownHall;
 import org.multiagent_city.environment.IObserver;
 import org.multiagent_city.environment.Map;
 import org.multiagent_city.model.MapCellUI;
+import org.multiagent_city.nature.Nature;
 import org.multiagent_city.utils.Position;
 
 import java.awt.*;
@@ -25,7 +27,7 @@ public class MapView implements IObserver {
         return uiMap;
     }
 
-    public void setUiMap(Map map) {
+    public void setMap(Map map) {
         this.map = map;
     }
     public void setUiMap(MapCellUI[][] uiMap) {
@@ -35,7 +37,7 @@ public class MapView implements IObserver {
     @Override
     public void update(Map map, Position updatedPosition) {
         if(updatedPosition != null) {
-            System.out.println("Zones have been updated at " + updatedPosition);
+            //System.out.println("Zones have been updated at " + updatedPosition);
             // Update the specific area
             int positionX = updatedPosition.getX();
             int positionY = updatedPosition.getY();
@@ -56,21 +58,16 @@ public class MapView implements IObserver {
     }
 
     private void updateUiMap(Map map, int x, int y) {
-        if (map.getZones()[x][y].getInfrastructure() != null) {
-            this.uiMap[x][y] = new MapCellUI(this.getZoneColor(map, x, y), null);
-        } else {
-            this.uiMap[x][y] = new MapCellUI(this.getZoneColor(map, x, y), map.getZones()[x][y].getNature().getTexture());
-        }
-    }
-
-    private Color getZoneColor(Map map, int x, int y) {
         TownHall townHall = map.getTownHall();
         if (townHall != null && townHall.getPosition().isEqual(x, y)) {
-            return townHall.getType().getColor();
+            this.uiMap[x][y] = new MapCellUI(townHall.getType().getColor(), townHall.getType().getTexture());
         }
-        if (map.getZones()[x][y].getInfrastructure() != null) {
-            return map.getZones()[x][y].getInfrastructure().getType().getColor();
+        Infrastructure infra = map.getZones()[x][y].getInfrastructure();
+        if (infra != null) {
+            this.uiMap[x][y] = new MapCellUI(infra.getType().getColor(), infra.getType().getTexture());
+        } else {
+            Nature nature = map.getZones()[x][y].getNature();
+            this.uiMap[x][y] = new MapCellUI(nature.getColor(), nature.getTexture());
         }
-        return map.getZones()[x][y].getNature().getColor();
     }
 }

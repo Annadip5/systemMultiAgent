@@ -26,4 +26,12 @@ public class MapCellUI {
     public void setTexture(String texture) {
         this.texture = texture;
     }
+
+    @Override
+    public String toString() {
+        return "MapCellUI{" +
+                "color=" + color +
+                ", texture='" + texture + '\'' +
+                '}';
+    }
 }

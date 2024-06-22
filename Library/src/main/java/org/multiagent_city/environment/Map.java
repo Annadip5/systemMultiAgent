@@ -10,10 +10,7 @@ import org.multiagent_city.utils.FastNoiseLite;
 import org.multiagent_city.utils.NatureMap;
 import org.multiagent_city.utils.Position;
 import org.multiagent_city.utils.strategy.IStrategy;
-import org.multiagent_city.zonestate.BuildedState;
-import org.multiagent_city.zonestate.Degradedstate;
-import org.multiagent_city.zonestate.LockedState;
-import org.multiagent_city.zonestate.ZoneState;
+import org.multiagent_city.zonestate.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -180,7 +177,7 @@ public class Map extends Observable{
         infrastructures.addAll(this.roads);
         infrastructures.addAll(this.buildings);
         if(!infrastructures.isEmpty()){
-            System.out.println(infrastructures.get(0));
+            //System.out.println(infrastructures.get(0));
         }
         for (Infrastructure infrastructure: infrastructures) {
             Position infraPos = infrastructure.getPosition();
@@ -214,12 +211,18 @@ public class Map extends Observable{
     public void deleteInfrastructure(Infrastructure infrastructure){
         if (infrastructure instanceof Road) {
             this.roads.remove(infrastructure);
-            this.notify(this, infrastructure.getPosition());
         }
         if (infrastructure instanceof Building) {
             this.buildings.remove(infrastructure);
-            this.notify(this, infrastructure.getPosition());
         }
+        Position infraPos = infrastructure.getPosition();
+        Zone zone = this.getZones()[infraPos.getX()][infraPos.getY()];
+        if(!(zone.getZoneState() instanceof EmptyState)) {
+            zone.setZoneState(new EmptyState(zone));
+        }
+        System.out.println("-".repeat(50));
+        System.out.println("Removed : " + infrastructure.getType().getName() + " " + infrastructure.getPosition());
+        this.notify(this, infrastructure.getPosition());
     }
     public void deleteInfrastructures(List<Infrastructure> list){
         for(Infrastructure i: list){

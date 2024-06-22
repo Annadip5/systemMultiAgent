@@ -194,17 +194,13 @@ public abstract class Infrastructure {
             if (infra != null && !this.checkNeighborPosition(map, pos) && !positionAlreadyChecked.contains(pos)) {
                 infrastructuresToRemove.add(infra);
                 positionAlreadyChecked.add(pos);
+                infrastructuresToRemove.addAll(infra.isNotAlone(map, positionAlreadyChecked));  // Recursively check neighbors
             }
         }
 
-        /*List<Infrastructure> nestedInfrastructuresToRemove = new ArrayList<>();
-        for (Infrastructure infra : infrastructuresToRemove) {
-            nestedInfrastructuresToRemove.addAll(infra.isNotAlone(map, positionAlreadyChecked));
-        }
-        infrastructuresToRemove.addAll(nestedInfrastructuresToRemove);*/
-
         return infrastructuresToRemove;
     }
+
 
 
 }

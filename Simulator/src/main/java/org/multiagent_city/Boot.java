@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import org.multiagent_city.agents.Building;
 import org.multiagent_city.agents.Infrastructure;
 import org.multiagent_city.agents.Road;
@@ -48,10 +50,14 @@ public class Boot extends Game {
 
     private Map<String, Texture> textureMap;
 
+    private boolean isPaused = false;
+    private Rectangle playPauseButtonBounds;
+
     @Override
     public void create() {
         this.loadTextures();
         this.setInfrastructureWeights();
+        this.createButtons();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(true, mapWidth * cellSize, mapHeight * cellSize);
@@ -97,65 +103,99 @@ public class Boot extends Game {
         textureMap.put(org.multiagent_city.utils.Texture.pruningState, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.pruningState)));
         textureMap.put(org.multiagent_city.utils.Texture.lockedState, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.lockedState)));
         textureMap.put(org.multiagent_city.utils.Texture.inConstructionState, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.inConstructionState)));
+
+        // Buttons
+        textureMap.put(org.multiagent_city.utils.Texture.play, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.play)));
+        textureMap.put(org.multiagent_city.utils.Texture.pause, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.pause)));
     }
 
     private void setInfrastructureWeights() {
         // Define weights for each infrastructure type
-        infrastructureWeights.put(Road.class, 20);
+        infrastructureWeights.put(Road.class, 100);
         infrastructureWeights.put(Dwelling.class, 10);
         infrastructureWeights.put(Hospital.class, 1);
         infrastructureWeights.put(School.class, 1);
         infrastructureWeights.put(Mall.class, 3);
     }
 
+    private void createButtons() {
+        // Position du bouton (en bas à droite par exemple)
+        playPauseButtonBounds = new Rectangle(Gdx.graphics.getWidth() - 50, 50, 50, 50);
+    }
+
+    private void updateButtons(double deltaTime) {
+        // Gestion des événements de clic pour le bouton play/pause
+        if (Gdx.input.justTouched()) {
+            Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(touch);
+
+            if (playPauseButtonBounds.contains(touch.x, touch.y)) {
+                isPaused = !isPaused; // Inverser l'état play/pause
+            }
+        }
+
+        // Rendu du bouton play/pause
+        spriteBatch.begin();
+        if (isPaused) {
+            spriteBatch.draw(textureMap.get(org.multiagent_city.utils.Texture.play), playPauseButtonBounds.x, playPauseButtonBounds.y, playPauseButtonBounds.width, playPauseButtonBounds.height);
+        } else {
+            spriteBatch.draw(textureMap.get(org.multiagent_city.utils.Texture.pause), playPauseButtonBounds.x, playPauseButtonBounds.y, playPauseButtonBounds.width, playPauseButtonBounds.height);
+        }
+        spriteBatch.end();
+    }
     @Override
     public void render() {
         float deltaTime = Gdx.graphics.getDeltaTime();
         elapsedTime += deltaTime;
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        spriteBatch.setProjectionMatrix(camera.combined);
+        if(!isPaused) {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            camera.update();
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            spriteBatch.setProjectionMatrix(camera.combined);
 
-        // Draw the background colors first
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (int x = 0; x < mapHeight; x++) {
-            for (int y = 0; y < mapWidth; y++) {
-                java.awt.Color awtColor = mapView.getUiMap()[x][y].getColor();
-                Color color = new Color(awtColor.getRed() / 255f, awtColor.getGreen() / 255f, awtColor.getBlue() / 255f, 1);
-                shapeRenderer.setColor(color);
-                shapeRenderer.rect(y * cellSize, x * cellSize, cellSize, cellSize);
-            }
-        }
-        shapeRenderer.end();
-
-        // Draw the textures on top of the background colors
-        spriteBatch.begin();
-        for (int x = 0; x < mapHeight; x++) {
-            for (int y = 0; y < mapWidth; y++) {
-                Texture texture = this.textureMap.get(mapView.getUiMap()[x][y].getTexture());
-                if (texture != null) {
-                    //spriteBatch.draw(texture, y * cellSize, x * cellSize, cellSize, cellSize);
-                    float originX = cellSize / 2;
-                    float originY = cellSize / 2;
-                    float rotation = 180.0f;
-                    spriteBatch.draw(texture, y * cellSize, x * cellSize, originX, originY, cellSize, cellSize, 1, 1, rotation, 0, 0, texture.getWidth(), texture.getHeight(), true, false);
+            // Draw the background colors first
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            for (int x = 0; x < mapHeight; x++) {
+                for (int y = 0; y < mapWidth; y++) {
+                    java.awt.Color awtColor = mapView.getUiMap()[x][y].getColor();
+                    Color color = new Color(awtColor.getRed() / 255f, awtColor.getGreen() / 255f, awtColor.getBlue() / 255f, 1);
+                    shapeRenderer.setColor(color);
+                    shapeRenderer.rect(y * cellSize, x * cellSize, cellSize, cellSize);
                 }
             }
-        }
-        spriteBatch.end();
+            shapeRenderer.end();
 
-        // Update infrastructures at set intervals
-        if (elapsedTime >= updateInterval * deltaTime && this.counter <= 30000) {
-            this.buildInfrastructures();
-            this.counter++;
-            elapsedTime = 0;
-        }
+            // Draw the textures on top of the background colors
+            spriteBatch.begin();
+            for (int x = 0; x < mapHeight; x++) {
+                for (int y = 0; y < mapWidth; y++) {
+                    Texture texture = this.textureMap.get(mapView.getUiMap()[x][y].getTexture());
+                    if (texture != null) {
+                        //spriteBatch.draw(texture, y * cellSize, x * cellSize, cellSize, cellSize);
+                        float originX = cellSize / 2;
+                        float originY = cellSize / 2;
+                        float rotation = 180.0f;
+                        spriteBatch.draw(texture, y * cellSize, x * cellSize, originX, originY, cellSize, cellSize, 1, 1, rotation, 0, 0, texture.getWidth(), texture.getHeight(), true, false);
+                    }
+                }
+            }
+            spriteBatch.end();
 
-        // Update the map
-        this.simulatorController.updateView(deltaTime);
+            // Update infrastructures at set intervals
+            if (elapsedTime >= updateInterval && this.counter <= 30000) {
+                this.buildInfrastructures();
+                this.counter++;
+                elapsedTime = 0;
+            }
+
+            // Update the map
+            this.simulatorController.updateView(deltaTime);
+        }
+        this.updateButtons(deltaTime);
+
+        super.render();
     }
 
     public void buildInfrastructures() {

@@ -5,6 +5,7 @@ public class Texture {
     private static final String nature = path + "nature/";
     private static final String infrastructures = path + "infrastructures/";
     private static final String zonestates = path + "zonestates/";
+    private static final String buttons = path + "buttons/";
 
     // Infrastructures
     // Road
@@ -29,4 +30,7 @@ public class Texture {
     public static final String lockedState = zonestates + "lockedState.png";
     public static final String inConstructionState = zonestates + "inConstructionState.png";
 
+    // Buttons
+    public static final String play = buttons + "play.png";
+    public static final String pause = buttons + "pause.png";
 }

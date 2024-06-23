@@ -17,7 +17,7 @@
 | *java JDK 21* <br> Version actuelle de Java | *IntelliJ IDEA* <br> Environnement de développement intégré pour Java | *Maven* <br> Outil de gestion de projet pour Java |
 
 ## Utilisation du projet
-Installer les dépendances du projet :
+Installer les dépendances du projet à la racine du projet :
 
 ```bash
 mvn clean install

@@ -213,9 +213,9 @@ public class Boot extends Game {
                     // You need to cast entry.getKey() to the specific type you want
                     Class<? extends Building> buildingClass = (Class<? extends Building>) entry.getKey();
                     this.addBuildingIfMatch(buildingClass, Dwelling.class, 100, 150, 2);
-                    this.addBuildingIfMatch(buildingClass, School.class, 100, 150, 2);
+                    this.addBuildingIfMatch(buildingClass, School.class, 100, 150, 3 );
                     this.addBuildingIfMatch(buildingClass, Hospital.class, 100, 150, 2);
-                    this.addBuildingIfMatch(buildingClass, Mall.class, 100, 150, 2);
+                    this.addBuildingIfMatch(buildingClass, Mall.class, 100, 150, 4);
                 }
                 break;
             }

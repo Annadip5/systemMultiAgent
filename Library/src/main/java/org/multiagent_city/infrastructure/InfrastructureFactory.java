@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 public class InfrastructureFactory {
-    private static List<InfrastructureType> infrastructureTypes = new ArrayList<>();
+    private static final List<InfrastructureType> infrastructureTypes = new ArrayList<>();
 
     public void addInfrastructureType(InfrastructureType type) {
         infrastructureTypes.add(type);

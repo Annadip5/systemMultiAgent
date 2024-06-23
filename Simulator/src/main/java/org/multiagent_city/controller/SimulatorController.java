@@ -20,7 +20,6 @@ public class SimulatorController {
     public SimulatorController(SimulatorView view, Simulator simulator) {
         this.view = view;
         this.simulator = simulator;
-
     }
 
     public SimulatorView getView() {

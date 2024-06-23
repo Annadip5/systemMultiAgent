@@ -51,8 +51,8 @@ public class Boot extends Game {
     private int cellSize = 20;
     private SimulatorController simulatorController;
     private int counter = 0;
-    private float elapsedTime = 100;
-    private float updateInterval = 50.000f;
+    private float elapsedTime = 0;
+    private float updateInterval = 0.100f; // time in seconds
 
     private static final int ROAD_WEIGHT = 100;
     private static final int DWELLING_WEIGHT = 50;
@@ -278,9 +278,8 @@ public class Boot extends Game {
                 spriteBatch.end();
 
                 // Update infrastructures at set intervals
-                if (elapsedTime >= updateInterval * deltaTime) {
+                if (elapsedTime >= updateInterval) {
                     this.buildInfrastructures(roadStrategy, buildingStrategy);
-                    this.counter++;
                     elapsedTime = 0;
                 }
                 spriteBatchConfig.begin();

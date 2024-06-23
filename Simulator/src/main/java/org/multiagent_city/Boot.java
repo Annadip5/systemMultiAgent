@@ -212,13 +212,22 @@ public class Boot extends Game {
                 } else if (Building.class.isAssignableFrom(entry.getKey())) {
                     // You need to cast entry.getKey() to the specific type you want
                     Class<? extends Building> buildingClass = (Class<? extends Building>) entry.getKey();
-                    this.simulatorController.addBuilding(new StrategyAStar(), buildingClass, 100, 150, 2);
+                    this.addBuildingIfMatch(buildingClass, Dwelling.class, 100, 150, 2);
+                    this.addBuildingIfMatch(buildingClass, School.class, 100, 150, 2);
+                    this.addBuildingIfMatch(buildingClass, Hospital.class, 100, 150, 2);
+                    this.addBuildingIfMatch(buildingClass, Mall.class, 100, 150, 2);
                 }
                 break;
             }
         }
 
         this.counter++;
+    }
+
+    private void addBuildingIfMatch(Class<? extends Building> buildingClass, Class<? extends Building> classToCheck, int minHealth, int maxHealth, float usuryCoefficient){
+        if (buildingClass == classToCheck) {
+            this.simulatorController.addBuilding(new StrategyAStar(), buildingClass, minHealth, maxHealth, usuryCoefficient);
+        }
     }
 
     @Override

@@ -12,7 +12,7 @@ public class DesktopLauncher {
         config.setTitle("Simulator");
 
         // Window
-        config.setWindowedMode(640,640);
+        config.setWindowedMode(960,640);
         //config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 
         new Lwjgl3Application(new Boot(), config);

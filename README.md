@@ -25,6 +25,8 @@ Dans le module Simulator, la classe DesktopLauncher est le point d'entrée du la
 ### Depuis le fichier jar 
 Double clic sur le fichier jar situé au chemin ci-dessous
 - Simulator/target/Simulator-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+Ou dans : 
 - Fichier donné séparé du projet
 
 ## Développeurs

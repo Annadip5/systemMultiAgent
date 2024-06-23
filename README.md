@@ -1,13 +1,13 @@
-# SoftwareProject
+# Système multi-agent simulation ville
 
-<div style="display:flex;align-items: center; justify-content: center">
-  <figure style=" margin-right: 2%;">
+<div style="display:flex; align-items: center; justify-content: center;">
+  <figure style="text-align: center; margin-right: 20px;">
     <img src="images/ville.png" alt="Description de l'image" style="height: 300px; width: 300px;">
-    <figcaption>Ville actuelle</figcaption>
+    <figcaption>Expansion</figcaption>
   </figure>
-  <figure >
+  <figure style="text-align: center;">
     <img src="images/villeDegradation.png" alt="Description de l'image" style="height: 300px; width: 300px;">
-    <figcaption>Ville en dégradation</figcaption>
+    <figcaption>Dégradation</figcaption>
   </figure>
 </div>
 
@@ -19,7 +19,9 @@
 ## Utilisation du projet
 Installer les dépendances du projet :
 
-```mvn clean install```
+```bash
+mvn clean install
+```
 ## Structure du projet 
 Le projet contient 2 modules : 
 - Library

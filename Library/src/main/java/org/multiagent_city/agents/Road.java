@@ -14,17 +14,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Road extends Infrastructure {
-
+    private double noBuildingTime;
+    public static final double MAX_NO_BUILDING_TIME = 10; //temps limite pour determiner si y a des batiments autour du radius
+    public static final int BUILDING_RADIUS = 5;
     public Road(int minHealth, int maxHealth, float usuryCoefficient) {
         super(InfrastructureFactory.getInfrastructureType("Road", new Color(0,0,0), Texture.road), minHealth, maxHealth, usuryCoefficient);
+        this.noBuildingTime = 0;
+
     }
 
     public Road(float usuryCoefficient, int minHealth, int maxHealth, Position position) {
         super(InfrastructureFactory.getInfrastructureType("Road", new Color(0,0,0), Texture.road), usuryCoefficient, minHealth, maxHealth, position);
+        this.noBuildingTime = 0;
+
     }
 
     public Road(InfrastructureType type, Position position) {
         super(type, position);
+        this.noBuildingTime = 0;
+
     }
 
     @Override
@@ -79,6 +87,20 @@ public class Road extends Infrastructure {
 
         // Vérifie si la position est adjacente à une route
         return isPresentUp || isPresentDown || isPresentLeft || isPresentRight;
+    }
+    public double getNoBuildingTime() {
+        return noBuildingTime;
+    }
+
+    public void setNoBuildingTime(double noBuildingTime) {
+        this.noBuildingTime = noBuildingTime;
+    }
+    public void updateNoBuildingTime(Map map, double deltaTime) {
+        if (!map.hasBuildingInRadius(this.position, BUILDING_RADIUS)) {
+            this.noBuildingTime += deltaTime;
+        } else {
+            this.noBuildingTime = 0;
+        }
     }
 
 }

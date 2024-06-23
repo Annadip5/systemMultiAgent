@@ -162,13 +162,15 @@ public class Map extends Observable{
             return;
         }
         road.setPosition(newPosition);
-
-        // Add the road agent to list
-        this.roads.add(road);
-        // Add the road to the zone
-        this.setZone(newPosition, road);
-        System.out.println("Road " + newPosition);
+        if (this.hasBuildingInRadius(newPosition, 10)) { // Remplacer 5 par le rayon souhaité
+            // Ajouter l'agent de route à la liste
+            this.roads.add(road);
+            // Ajouter la route à la zone
+            this.setZone(newPosition, road);
+            System.out.println("Road " + newPosition);
+       }
     }
+
 
     public void checkZoneState(double deltaTime) {
         List<Infrastructure> infrastructures = new ArrayList<>();
@@ -176,32 +178,39 @@ public class Map extends Observable{
 
         infrastructures.addAll(this.roads);
         infrastructures.addAll(this.buildings);
-        if(!infrastructures.isEmpty()){
-            //System.out.println(infrastructures.get(0));
+        if (!infrastructures.isEmpty()) {
+            // System.out.println(infrastructures.get(0));
         }
-        for (Infrastructure infrastructure: infrastructures) {
+        for (Infrastructure infrastructure : infrastructures) {
             Position infraPos = infrastructure.getPosition();
-            if(!infrastructure.checkNeighborPosition(this,infraPos)){
+            if (!infrastructure.checkNeighborPosition(this, infraPos)) {
                 infrastructuresToRemove.add(infrastructure);
-                //this.deleteInfrastructure(infrastructure);
                 continue;
             }
             ZoneState zoneState = this.zones[infraPos.getX()][infraPos.getY()].getZoneState();
-            if(zoneState instanceof BuildedState || zoneState instanceof Degradedstate) {
-                if(infrastructure.getCurrentUsury() < (double) infrastructure.getHealth() / 2 && zoneState instanceof BuildedState) {
+            if (zoneState instanceof BuildedState || zoneState instanceof Degradedstate) {
+                if (infrastructure.getCurrentUsury() < (double) infrastructure.getHealth() / 2 && zoneState instanceof BuildedState) {
                     zoneState.nextState(0);
                 }
-                if(infrastructure.getCurrentUsury() == infrastructure.getHealth() && zoneState instanceof Degradedstate) {
+                if (infrastructure.getCurrentUsury() == infrastructure.getHealth() && zoneState instanceof Degradedstate) {
                     zoneState.nextState(0);
                     infrastructuresToRemove.add(infrastructure);
-                    //this.deleteInfrastructure(infrastructure);
-
-                    /*List<Infrastructure> listToRemoveAloneInfrastructures =  infrastructure.isNotAlone(this, new ArrayList<>());
-                    this.deleteInfrastructures(listToRemoveAloneInfrastructures);*/
                 }
-
                 // Add usury
                 infrastructure.addCurrentUsury(deltaTime);
+
+                // Specific logic for roads
+                if (infrastructure instanceof Road) {
+                    Road road = (Road) infrastructure;
+                    if (!infrastructure.hasBuildingsAround(this, infraPos, 5)) {
+                        road.setNoBuildingTime(road.getNoBuildingTime() + deltaTime);
+                        if (road.getNoBuildingTime() > 10) {
+                            infrastructuresToRemove.add(road);
+                        }
+                    } else {
+                        road.setNoBuildingTime(0);
+                    }
+                }
             } else {
                 zoneState.removeCurrentTime(deltaTime);
                 if (zoneState.getCurrentTime() == 0) {
@@ -211,21 +220,31 @@ public class Map extends Observable{
         }
         this.deleteInfrastructures(infrastructuresToRemove);
     }
+
+    public void resetZone(Infrastructure infrastructure){
+        Position infraPos = infrastructure.getPosition();
+        Zone zone = this.getZones()[infraPos.getX()][infraPos.getY()];
+        if(!(zone.getNature() instanceof Grass)) {
+            zone.setNature(new Grass());
+        }
+        if(!(zone.getZoneState() instanceof EmptyState)) {
+            zone.setZoneState(new EmptyState(zone));
+        }
+    }
     public void deleteInfrastructure(Infrastructure infrastructure){
         if (infrastructure instanceof Road) {
-            infrastructure.repair(this, 2);
+            if(((Road) infrastructure).getNoBuildingTime()>10){
+                this.roads.remove(infrastructure);
+                this.resetZone(infrastructure);
+            }
+            else {
+                infrastructure.repair(this, 2);
+            }
         }
         if (infrastructure instanceof Building) {
             this.buildings.remove(infrastructure);
 
-            Position infraPos = infrastructure.getPosition();
-            Zone zone = this.getZones()[infraPos.getX()][infraPos.getY()];
-            if(!(zone.getNature() instanceof Grass)) {
-                zone.setNature(new Grass());
-            }
-            if(!(zone.getZoneState() instanceof EmptyState)) {
-                zone.setZoneState(new EmptyState(zone));
-            }
+           this.resetZone(infrastructure);
         }
 
         this.notify(this, infrastructure.getPosition());
@@ -235,6 +254,22 @@ public class Map extends Observable{
             this.deleteInfrastructure(i);
         }
     }
+    public boolean hasBuildingInRadius(Position position, int radius) {
+        int startX = Math.max(0, position.getX() - radius);
+        int endX = Math.min(width - 1, position.getX() + radius);
+        int startY = Math.max(0, position.getY() - radius);
+        int endY = Math.min(height - 1, position.getY() + radius);
+
+        for (int x = startX; x <= endX; x++) {
+            for (int y = startY; y <= endY; y++) {
+                if (zones[x][y].getInfrastructure() instanceof Building) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public String toString() {

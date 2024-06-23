@@ -46,7 +46,7 @@ public class Zone {
     }
 
     public boolean isBuildable() {
-        return !this.isOccupied() && nature.isBuildable();
+        return !this.isOccupied() && nature.isBuildable() && this.zoneState instanceof EmptyState;
     }
 
     public void deleteInfrastructure() {

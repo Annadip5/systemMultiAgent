@@ -101,7 +101,7 @@ public class Boot extends Game {
 
     private void setInfrastructureWeights() {
         // Define weights for each infrastructure type
-        infrastructureWeights.put(Road.class, 20);
+        infrastructureWeights.put(Road.class, 30);
         infrastructureWeights.put(Dwelling.class, 10);
         infrastructureWeights.put(Hospital.class, 1);
         infrastructureWeights.put(School.class, 1);
@@ -146,6 +146,7 @@ public class Boot extends Game {
             }
         }
         spriteBatch.end();
+        this.simulatorController.updateView(deltaTime);
 
         // Update infrastructures at set intervals
         if (elapsedTime >= updateInterval * deltaTime && this.counter <= 30000) {
@@ -155,7 +156,6 @@ public class Boot extends Game {
         }
 
         // Update the map
-        this.simulatorController.updateView(deltaTime);
     }
 
     public void buildInfrastructures() {
@@ -173,7 +173,7 @@ public class Boot extends Game {
                 } else if (Building.class.isAssignableFrom(entry.getKey())) {
                     // You need to cast entry.getKey() to the specific type you want
                     Class<? extends Building> buildingClass = (Class<? extends Building>) entry.getKey();
-                    this.simulatorController.addBuilding(new StrategyAStar(), buildingClass, 100, 150, 2);
+                    this.simulatorController.addBuilding(new StrategyAStar(), buildingClass, 100, 150, 5);
                 }
                 break;
             }

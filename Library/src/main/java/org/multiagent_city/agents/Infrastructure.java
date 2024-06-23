@@ -215,4 +215,21 @@ public abstract class Infrastructure {
         Zone zone = map.getZones()[this.position.getX()][this.position.getY()];
         zone.setZoneState(new InConstructionState(repairDuration, zone));
     }
+    public boolean hasBuildingsAround(Map map, Position position, int radius) {
+        int startX = Math.max(0, position.getX() - radius);
+        int endX = Math.min(map.getWidth() - 1, position.getX() + radius);
+        int startY = Math.max(0, position.getY() - radius);
+        int endY = Math.min(map.getHeight() - 1, position.getY() + radius);
+
+        for (int x = startX; x <= endX; x++) {
+            for (int y = startY; y <= endY; y++) {
+                if (map.getZones()[x][y].getInfrastructure() instanceof Building) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }

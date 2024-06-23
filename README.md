@@ -1,11 +1,11 @@
 # SoftwareProject
 
 <div style="display:flex;align-items: center; justify-content: center">
-  <figure style="display: inline-block; margin-right: 2%;">
+  <figure style=" margin-right: 2%;">
     <img src="images/ville.png" alt="Description de l'image" style="height: 300px; width: 300px;">
     <figcaption>Ville actuelle</figcaption>
   </figure>
-  <figure style="display: inline-block;">
+  <figure >
     <img src="images/villeDegradation.png" alt="Description de l'image" style="height: 300px; width: 300px;">
     <figcaption>Ville en dégradation</figcaption>
   </figure>

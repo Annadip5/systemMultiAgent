@@ -37,8 +37,8 @@ public class Boot extends Game {
     private ShapeRenderer shapeRenderer;
     private SpriteBatch spriteBatch;
     private MapView mapView;
-    private int mapWidth = 50;
-    private int mapHeight = 50;
+    private int mapWidth = 20;//60
+    private int mapHeight = 20;//60
     private int cellSize = 20;
     private SimulatorController simulatorController;
     private int counter = 0;
@@ -78,7 +78,7 @@ public class Boot extends Game {
 
         int blurRadius = 1;
         this.simulatorController.createSimulation(noise, blurRadius);
-        this.simulatorController.setTownHallPosition(15,35);
+        this.simulatorController.setTownHallPosition(10,10);
 
     }
 
@@ -119,8 +119,7 @@ public class Boot extends Game {
     }
 
     private void createButtons() {
-        // Position du bouton (en bas à droite par exemple)
-        playPauseButtonBounds = new Rectangle(Gdx.graphics.getWidth() - 50, 50, 50, 50);
+        playPauseButtonBounds = new Rectangle(0, 0, 50, 50);
     }
 
     private void updateButtons(double deltaTime) {

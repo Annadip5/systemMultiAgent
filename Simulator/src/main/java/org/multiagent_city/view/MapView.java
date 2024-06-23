@@ -67,16 +67,21 @@ public class MapView implements IObserver {
             this.uiMap[x][y] = new MapCellUI(townHall.getType().getColor(), townHall.getType().getTexture());
         }
         Infrastructure infra = map.getZones()[x][y].getInfrastructure();
+        Nature nature = map.getZones()[x][y].getNature();
+
         if (infra != null) {
             ZoneState zoneState = map.getZones()[x][y].getZoneState();
             // Check the state
-            if (zoneState instanceof LockedState || zoneState instanceof PruningState || zoneState instanceof InConstructionState){
-                this.uiMap[x][y] = new MapCellUI(infra.getType().getColor(), zoneState.getTexture());
-            } else {
-                this.uiMap[x][y] = new MapCellUI(infra.getType().getColor(), infra.getType().getTexture());
+            if (zoneState instanceof LockedState || zoneState instanceof PruningState) {
+                this.uiMap[x][y] = new MapCellUI(nature.getColor(), zoneState.getTexture());
+                return;
             }
+            if(zoneState instanceof InConstructionState){
+                this.uiMap[x][y] = new MapCellUI(infra.getType().getColor(), zoneState.getTexture());
+                return;
+            }
+            this.uiMap[x][y] = new MapCellUI(infra.getType().getColor(), infra.getType().getTexture());
         } else {
-            Nature nature = map.getZones()[x][y].getNature();
             this.uiMap[x][y] = new MapCellUI(nature.getColor(), nature.getTexture());
         }
     }

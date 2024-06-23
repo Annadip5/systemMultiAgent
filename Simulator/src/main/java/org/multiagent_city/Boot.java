@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import org.multiagent_city.agents.Building;
@@ -31,26 +30,12 @@ import org.multiagent_city.utils.strategy.StrategyAStar;
 import org.multiagent_city.utils.strategy.StrategyRandom;
 import org.multiagent_city.view.SimulatorView;
 import org.multiagent_city.view.MapView;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -59,6 +44,7 @@ public class Boot extends Game {
     private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
     private SpriteBatch spriteBatch;
+    private SpriteBatch spriteBatchConfig;
     private MapView mapView;
     private int mapWidth = 20;//60
     private int mapHeight = 20;//60
@@ -66,7 +52,14 @@ public class Boot extends Game {
     private SimulatorController simulatorController;
     private int counter = 0;
     private float elapsedTime = 100;
-    private float updateInterval = 0.010f;
+    private float updateInterval = 50.000f;
+
+    private static final int ROAD_WEIGHT = 100;
+    private static final int DWELLING_WEIGHT = 50;
+    private static final int SCHOOL_WEIGHT = 1;
+    private static final int MALL_WEIGHT = 10;
+    private static final int HOSPITAL_WEIGHT = 1;
+
     private IStrategy roadStrategy;
     private IStrategy buildingStrategy;
     private Boolean aStarSelected=false;
@@ -103,15 +96,14 @@ public class Boot extends Game {
         this.setInfrastructureWeights();
         this.createButtons();
         spriteBatch = new SpriteBatch();
+        spriteBatchConfig = new SpriteBatch();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(true, mapWidth * cellSize, mapHeight * cellSize);
         shapeRenderer = new ShapeRenderer();
-
         shapeRenderer1 = new ShapeRenderer();
-        //backgroundTexture = new Texture(Gdx.files.internal("black-rectangle-png.png"));
 
-       backgroundTexture = new Texture(Gdx.files.internal("ville2.jpg"));
+        backgroundTexture = new Texture(Gdx.files.internal("ville2.jpg"));
         // Initialize UI components
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -191,61 +183,61 @@ public class Boot extends Game {
         table.add(randomCheckBox).left().pad(10);
     }
 
-    @Override
-    public void render() {
+    private void clearGL() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
 
-        // Dessiner l'image de fond
-        spriteBatch.begin();
-        spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        spriteBatch.end();
+    @Override
+    public void render() {
         if (!configDone) {
+            this.clearGL();
+            // Dessiner l'image de fond
+            spriteBatchConfig.begin();
+            spriteBatchConfig.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            spriteBatchConfig.end();
+
             stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
             stage.draw();
 
-            spriteBatch.begin();
-            font.draw(spriteBatch, "Bienvenue dans la simulation de ville !", 230, 550);
+            spriteBatchConfig.begin();
+            font.draw(spriteBatchConfig, "Bienvenue dans la simulation de ville !", 230, 550);
             switch (step) {
                 case 0:
 
-                    font.draw(spriteBatch, "Pour la création des routes:", 270, 470);
+                    font.draw(spriteBatchConfig, "Pour la création des routes:", 270, 470);
                     stage.draw();
-
-                  //  font.draw(spriteBatch, "Tapez 1 pour une stratégie random ou 2 pour une stratégie A*.", 100, 300);
                     break;
                 case 1:
-                    font.draw(spriteBatch, "Pour la création des constructions:", 270, 470);
-                  //  font.draw(spriteBatch, "Tapez 1 pour une stratégie random ou 2 pour une stratégie A*.", 100, 300);
+                    font.draw(spriteBatchConfig, "Pour la création des constructions:", 270, 470);
                     stage.draw();
                     break;
                 case 2:
-
                     table.removeActor(strategyLabel);
                     aStarCheckBox.clear();
                     randomCheckBox.clear();
                     textField.setPosition(380,320);
                     stage.addActor(textField);
                     font.setColor(Color.WHITE);
-                    font.draw(spriteBatch, "Les valeurs par défaut des poids de chaque construction sont :", 100, 470);
-                    font.draw(spriteBatch, "Routes : 20, Habitation : 10, ,Hôpital : 1, Ecole : 1, Commerce : 3", 90, 440);
-                    font.draw(spriteBatch, "Voulez-vous les changer (O/N) ?", 250, 410);
+                    font.draw(spriteBatchConfig, "Les valeurs par défaut des poids de chaque construction sont :", 100, 470);
+                    font.draw(spriteBatchConfig, "Routes : "+ROAD_WEIGHT+", Habitation : "+DWELLING_WEIGHT+", Hôpital : "+HOSPITAL_WEIGHT+", École : "+SCHOOL_WEIGHT+", Commerce : "+MALL_WEIGHT, 90, 440);
+                    font.draw(spriteBatchConfig, "Voulez-vous les changer (O/N) ?", 250, 410);
 
                     break;
                 case 3:
                     if (changeWeights) {
-                        font.draw(spriteBatch, "Entrez les valeurs séparées par des virgules comme suit", 190, 450);
-                        font.draw(spriteBatch, "Route,Habitation,Hopital,Ecole,Commerce", 220, 400);
+                        font.draw(spriteBatchConfig, "Entrez les valeurs séparées par des virgules comme suit", 190, 450);
+                        font.draw(spriteBatchConfig, "Route,Habitation,Hopital,Ecole,Commerce", 220, 400);
                     } else {
                         configDone = true;
                         initializeSimulation();
                     }
                     break;
                 case 4:
-                    font.draw(spriteBatch, "La simulation va commencer", 100, 350);
+                    font.draw(spriteBatchConfig, "La simulation va commencer", 100, 350);
                     break;
             }
-            spriteBatch.end();
+            spriteBatchConfig.end();
 
             handleInput();
         } else {
@@ -253,6 +245,7 @@ public class Boot extends Game {
             elapsedTime += deltaTime;
 
             if(!isPaused) {
+                this.clearGL();
                 camera.update();
                 shapeRenderer.setProjectionMatrix(camera.combined);
                 spriteBatch.setProjectionMatrix(camera.combined);
@@ -285,11 +278,14 @@ public class Boot extends Game {
                 spriteBatch.end();
 
                 // Update infrastructures at set intervals
-                if (elapsedTime >= updateInterval * deltaTime && this.counter <= 30000) {
+                if (elapsedTime >= updateInterval * deltaTime) {
                     this.buildInfrastructures(roadStrategy, buildingStrategy);
                     this.counter++;
                     elapsedTime = 0;
                 }
+                spriteBatchConfig.begin();
+                font.draw(spriteBatchConfig, String.format("%d", this.counter), 20, 50);
+                spriteBatchConfig.end();
 
                 // Update the map
                 this.simulatorController.updateView(deltaTime);
@@ -384,11 +380,11 @@ public class Boot extends Game {
 
     private void setInfrastructureWeights() {
         // Define weights for each infrastructure type
-        infrastructureWeights.put(Road.class, 100);
-        infrastructureWeights.put(Dwelling.class, 10);
-        infrastructureWeights.put(Hospital.class, 1);
-        infrastructureWeights.put(School.class, 1);
-        infrastructureWeights.put(Mall.class, 3);
+        infrastructureWeights.put(Road.class, ROAD_WEIGHT);
+        infrastructureWeights.put(Dwelling.class, DWELLING_WEIGHT);
+        infrastructureWeights.put(Hospital.class, HOSPITAL_WEIGHT);
+        infrastructureWeights.put(School.class, SCHOOL_WEIGHT);
+        infrastructureWeights.put(Mall.class, MALL_WEIGHT);
     }
     private void setInfrastructureWeights(int roadWeight, int dwellingWeight, int hospitalWeight , int schoolWeight, int mallWeight) {
         // Define weights for each infrastructure type
@@ -499,4 +495,55 @@ public class Boot extends Game {
             this.simulatorController.addBuilding(strategy, buildingClass, minHealth, maxHealth, usuryCoefficient);
         }
     }
+
+    @Override
+    public void dispose() {
+        // Dispose of resources to prevent memory leaks
+
+        // Dispose of the textures
+        if (textureMap != null) {
+            for (Texture texture : textureMap.values()) {
+                if (texture != null) {
+                    texture.dispose();
+                }
+            }
+        }
+
+        // Dispose of sprite batches
+        if (spriteBatch != null) {
+            spriteBatch.dispose();
+        }
+        if (spriteBatchConfig != null) {
+            spriteBatchConfig.dispose();
+        }
+
+        // Dispose of shape renderers
+        if (shapeRenderer != null) {
+            shapeRenderer.dispose();
+        }
+        if (shapeRenderer1 != null) {
+            shapeRenderer1.dispose();
+        }
+
+        // Dispose of the stage
+        if (stage != null) {
+            stage.dispose();
+        }
+
+        // Dispose of the font
+        if (font != null) {
+            font.dispose();
+        }
+
+        // Dispose of the background texture
+        if (backgroundTexture != null) {
+            backgroundTexture.dispose();
+        }
+
+        // Additional disposables, if any
+        if (camera != null) {
+            camera = null;
+        }
+    }
+
 }

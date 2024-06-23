@@ -1,5 +1,9 @@
 # SoftwareProject
-![Ville](images/ville.png)
+
+<p align="center">
+  <img src="images/ville.png" alt="Description de l'image">
+</p>
+
 ## Prérequis
 - java JDK 21
 - intelliJ IDEA

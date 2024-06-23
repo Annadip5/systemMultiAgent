@@ -7,6 +7,6 @@ import java.awt.*;
 
 public class Rock extends Nature {
     public Rock() {
-        super("Rock", new Color(128, 128, 128), Texture.rock,false);
+        super("Rock", new Color(128, 128, 128), Texture.ROCK,false);
     }
 }

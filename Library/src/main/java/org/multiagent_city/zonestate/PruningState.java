@@ -5,7 +5,7 @@ import org.multiagent_city.utils.Texture;
 
 public class PruningState extends ZoneState{
     public PruningState(int duration, Zone zone) {
-        super(duration, zone, Texture.pruningState);
+        super(duration, zone, Texture.PRUNING_STATE);
     }
     @Override
     public void nextState(int duration) {

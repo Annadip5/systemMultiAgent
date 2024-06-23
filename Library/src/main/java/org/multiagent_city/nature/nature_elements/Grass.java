@@ -7,6 +7,6 @@ import java.awt.*;
 
 public class Grass extends Nature {
     public Grass() {
-        super("Grass", new Color(173, 255, 47), Texture.grass,true);
+        super("Grass", new Color(173, 255, 47), Texture.GRASS,true);
     }
 }

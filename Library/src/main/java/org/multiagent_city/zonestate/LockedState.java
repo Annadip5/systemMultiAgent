@@ -7,7 +7,7 @@ import org.multiagent_city.utils.Texture;
 
 public class LockedState extends ZoneState{
     public LockedState(int duration, Zone zone) {
-        super(duration, zone, Texture.lockedState);
+        super(duration, zone, Texture.LOCKED_STATE);
     }
     @Override
     public void nextState(int duration) {

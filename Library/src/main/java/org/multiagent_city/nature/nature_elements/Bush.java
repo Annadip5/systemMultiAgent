@@ -7,6 +7,6 @@ import java.awt.*;
 
 public class Bush extends Nature {
     public Bush( ) {
-        super("Bush", new Color(50, 205, 50), Texture.bush,true);
+        super("Bush", new Color(50, 205, 50), Texture.BUSH,true);
     }
 }

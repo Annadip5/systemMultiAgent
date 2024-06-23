@@ -10,6 +10,6 @@ import java.awt.*;
 public class TownHall extends Building {
 
     public TownHall(int x, int y) {
-        super(InfrastructureFactory.getInfrastructureType("TownHall", new Color(255,0,0), Texture.townHall), new Position(x, y));
+        super(InfrastructureFactory.getInfrastructureType("TownHall", new Color(255,0,0), Texture.TOWN_HALL), new Position(x, y));
     }
 }

@@ -85,28 +85,28 @@ public class Boot extends Game {
     private void loadTextures() {
         textureMap = new HashMap<>();
         // Infrastructures
-        textureMap.put(org.multiagent_city.utils.Texture.road, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.road)));
-        textureMap.put(org.multiagent_city.utils.Texture.dwelling, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.dwelling)));
-        textureMap.put(org.multiagent_city.utils.Texture.school, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.school)));
-        textureMap.put(org.multiagent_city.utils.Texture.hospital, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.hospital)));
-        textureMap.put(org.multiagent_city.utils.Texture.mall, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.mall)));
-        textureMap.put(org.multiagent_city.utils.Texture.townHall, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.townHall)));
+        textureMap.put(org.multiagent_city.utils.Texture.ROAD, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.ROAD)));
+        textureMap.put(org.multiagent_city.utils.Texture.DWELLING, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.DWELLING)));
+        textureMap.put(org.multiagent_city.utils.Texture.SCHOOL, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.SCHOOL)));
+        textureMap.put(org.multiagent_city.utils.Texture.HOSPITAL, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.HOSPITAL)));
+        textureMap.put(org.multiagent_city.utils.Texture.MALL, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.MALL)));
+        textureMap.put(org.multiagent_city.utils.Texture.TOWN_HALL, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.TOWN_HALL)));
 
         // Nature
-        textureMap.put(org.multiagent_city.utils.Texture.water, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.water)));
-        textureMap.put(org.multiagent_city.utils.Texture.rock, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.rock)));
-        textureMap.put(org.multiagent_city.utils.Texture.tree, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.tree)));
-        textureMap.put(org.multiagent_city.utils.Texture.bush, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.bush)));
-        textureMap.put(org.multiagent_city.utils.Texture.grass, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.grass)));
+        textureMap.put(org.multiagent_city.utils.Texture.WATER, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.WATER)));
+        textureMap.put(org.multiagent_city.utils.Texture.ROCK, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.ROCK)));
+        textureMap.put(org.multiagent_city.utils.Texture.TREE, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.TREE)));
+        textureMap.put(org.multiagent_city.utils.Texture.BUSH, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.BUSH)));
+        textureMap.put(org.multiagent_city.utils.Texture.GRASS, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.GRASS)));
 
         // ZoneState
-        textureMap.put(org.multiagent_city.utils.Texture.pruningState, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.pruningState)));
-        textureMap.put(org.multiagent_city.utils.Texture.lockedState, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.lockedState)));
-        textureMap.put(org.multiagent_city.utils.Texture.inConstructionState, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.inConstructionState)));
+        textureMap.put(org.multiagent_city.utils.Texture.PRUNING_STATE, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.PRUNING_STATE)));
+        textureMap.put(org.multiagent_city.utils.Texture.LOCKED_STATE, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.LOCKED_STATE)));
+        textureMap.put(org.multiagent_city.utils.Texture.IN_CONSTRUCTION_STATE, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.IN_CONSTRUCTION_STATE)));
 
         // Buttons
-        textureMap.put(org.multiagent_city.utils.Texture.play, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.play)));
-        textureMap.put(org.multiagent_city.utils.Texture.pause, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.pause)));
+        textureMap.put(org.multiagent_city.utils.Texture.PLAY, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.PLAY)));
+        textureMap.put(org.multiagent_city.utils.Texture.PAUSE, new Texture(Gdx.files.internal(org.multiagent_city.utils.Texture.PAUSE)));
     }
 
     private void setInfrastructureWeights() {
@@ -137,9 +137,9 @@ public class Boot extends Game {
         // Rendu du bouton play/pause
         spriteBatch.begin();
         if (isPaused) {
-            spriteBatch.draw(textureMap.get(org.multiagent_city.utils.Texture.play), playPauseButtonBounds.x, playPauseButtonBounds.y, playPauseButtonBounds.width, playPauseButtonBounds.height);
+            spriteBatch.draw(textureMap.get(org.multiagent_city.utils.Texture.PLAY), playPauseButtonBounds.x, playPauseButtonBounds.y, playPauseButtonBounds.width, playPauseButtonBounds.height);
         } else {
-            spriteBatch.draw(textureMap.get(org.multiagent_city.utils.Texture.pause), playPauseButtonBounds.x, playPauseButtonBounds.y, playPauseButtonBounds.width, playPauseButtonBounds.height);
+            spriteBatch.draw(textureMap.get(org.multiagent_city.utils.Texture.PAUSE), playPauseButtonBounds.x, playPauseButtonBounds.y, playPauseButtonBounds.width, playPauseButtonBounds.height);
         }
         spriteBatch.end();
     }

@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class Mall extends Building {
     public Mall(int minHealth, int maxHealth, float usuryCoefficient){
-        super(new InfrastructureType("Mall", new Color(123, 104, 238), Texture.mall), minHealth, maxHealth, usuryCoefficient);
+        super(new InfrastructureType("Mall", new Color(123, 104, 238), Texture.MALL), minHealth, maxHealth, usuryCoefficient);
     }
     public Mall(InfrastructureType type, Position position) {
         super(type, position);

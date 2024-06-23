@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class School extends Building {
     public School(int minHealth, int maxHealth, float usuryCoefficient){
-        super(new InfrastructureType("School", new Color(255, 215, 0), Texture.school), minHealth, maxHealth, usuryCoefficient);
+        super(new InfrastructureType("School", new Color(255, 215, 0), Texture.SCHOOL), minHealth, maxHealth, usuryCoefficient);
     }
     public School(InfrastructureType type, Position position) {
         super(type, position);

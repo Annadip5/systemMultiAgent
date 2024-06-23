@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class Dwelling extends Building {
     public Dwelling(int minHealth, int maxHealth, float usuryCoefficient){
-        super(new InfrastructureType("Dwelling", new Color(255, 165, 0), Texture.dwelling), minHealth, maxHealth, usuryCoefficient);
+        super(new InfrastructureType("Dwelling", new Color(255, 165, 0), Texture.DWELLING), minHealth, maxHealth, usuryCoefficient);
     }
     public Dwelling(InfrastructureType type, Position position) {
         super(type, position);

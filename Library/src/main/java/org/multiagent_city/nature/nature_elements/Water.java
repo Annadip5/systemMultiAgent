@@ -7,6 +7,6 @@ import java.awt.*;
 
 public class Water extends Nature {
     public Water() {
-        super("Water", new Color(0, 206, 209), Texture.water,false);
+        super("Water", new Color(0, 206, 209), Texture.WATER,false);
     }
 }

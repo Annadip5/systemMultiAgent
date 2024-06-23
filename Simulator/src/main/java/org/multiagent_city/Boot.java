@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import org.multiagent_city.agents.Building;
 import org.multiagent_city.agents.Infrastructure;
 import org.multiagent_city.agents.Road;
@@ -54,6 +57,7 @@ public class Boot extends Game {
     private float elapsedTime = 0;
     private float updateInterval = 0.100f; // time in seconds
 
+
     private static final int ROAD_WEIGHT = 100;
     private static final int DWELLING_WEIGHT = 50;
     private static final int SCHOOL_WEIGHT = 1;
@@ -75,11 +79,9 @@ public class Boot extends Game {
     private BitmapFont font;
     private String inputText = "";
     private int step = 0;
-    private boolean waitForInput = true;
     private boolean changeWeights = false;
     private boolean configDone = false;
     private ButtonGroup<CheckBox> strategyButtonGroup;
-    private Skin skin;
     private Table table;
     private Texture backgroundTexture;
     private ShapeRenderer shapeRenderer1;
@@ -132,11 +134,11 @@ public class Boot extends Game {
         labelStyle.background = createDrawable(Color.BLACK);
 
         // Création du style pour le CheckBox
-        CheckBox.CheckBoxStyle checkBoxStyle = new CheckBox.CheckBoxStyle();
-        checkBoxStyle.checkboxOff = createDrawable(Color.DARK_GRAY);
-        checkBoxStyle.checkboxOn = createDrawable(Color.GREEN);
-        checkBoxStyle.font = font;
-        checkBoxStyle.fontColor = Color.WHITE;
+        CheckBox.CheckBoxStyle aStarCheckBoxStyle = createCheckBoxStyle(Color.DARK_GRAY, Color.GREEN, font, Color.WHITE);
+        CheckBox.CheckBoxStyle randomCheckBoxStyle = createCheckBoxStyle(Color.DARK_GRAY, Color.GREEN, font, Color.WHITE);
+
+        /*Drawable hoverDrawable = createDrawable(Color.LIGHT_GRAY);
+        Drawable checkboxOnHover = createDrawable(Color.SKY);*/
 
         table = new Table();
         table.setFillParent(true);
@@ -144,9 +146,9 @@ public class Boot extends Game {
 
         stage.addActor(table);
 
-        strategyLabel = new Label("Sélectionnez une stratégie :", labelStyle);
-        aStarCheckBox = new CheckBox("A star", checkBoxStyle);
-        randomCheckBox = new CheckBox("Random", checkBoxStyle);
+        strategyLabel = new Label("Sélectionnez une stratégie puis appuyer sur Entrer:", labelStyle);
+        aStarCheckBox = new CheckBox("A star", aStarCheckBoxStyle);
+        randomCheckBox = new CheckBox("Random", randomCheckBoxStyle);
 
         // Ajout de listeners aux cases à cocher
         aStarCheckBox.addListener(new ChangeListener() {
@@ -154,6 +156,7 @@ public class Boot extends Game {
             public void changed(ChangeEvent event, Actor actor) {
                 if (aStarCheckBox.isChecked()) {
                     aStarSelected = true;
+
                     System.out.println("A star selected");
                 }
             }
@@ -164,12 +167,18 @@ public class Boot extends Game {
             public void changed(ChangeEvent event, Actor actor) {
                 if (randomCheckBox.isChecked()) {
                     aStarSelected = false;
+
                     System.out.println("Random selected");
                 }
             }
         });
 
+        addHoverEffect(aStarCheckBox);
+        addHoverEffect(randomCheckBox);
 
+        // Adding checkboxes to the stage
+        stage.addActor(aStarCheckBox);
+        stage.addActor(randomCheckBox);
         strategyButtonGroup = new ButtonGroup<>(aStarCheckBox, randomCheckBox);
         strategyButtonGroup.setMaxCheckCount(1);
         strategyButtonGroup.setMinCheckCount(1);
@@ -296,9 +305,16 @@ public class Boot extends Game {
     private void handleInput() {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            if(step==0){
+
+                aStarCheckBox.getLabel().setColor(Color.WHITE);
+                randomCheckBox.getLabel().setColor(Color.WHITE);
+            }
+
             if (step == 2 || step == 3) {
                 inputText = textField.getText();
                 textField.setText("Entrez ici");
+
             }
             processInput();
         }
@@ -445,7 +461,7 @@ public class Boot extends Game {
 
         int blurRadius = 1;
         this.simulatorController.createSimulation(noise, blurRadius);
-        this.simulatorController.setTownHallPosition(15, 15);
+        this.simulatorController.setTownHallPosition(10, 10);
     }
     private BaseDrawable createDrawable(final Color color) {
         return new BaseDrawable() {
@@ -544,5 +560,31 @@ public class Boot extends Game {
             camera = null;
         }
     }
+
+
+    private void addHoverEffect(final CheckBox checkBox) {
+        checkBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                aStarCheckBox.getLabel().setColor(Color.WHITE);
+                randomCheckBox.getLabel().setColor(Color.WHITE);
+
+                if (checkBox.isChecked()) {
+                    checkBox.getLabel().setColor(Color.GREEN);
+                }
+            }
+        });
+    }
+
+    private CheckBox.CheckBoxStyle createCheckBoxStyle(Color checkboxOffColor, Color checkboxOnColor, BitmapFont font, Color fontColor) {
+        CheckBox.CheckBoxStyle checkBoxStyle = new CheckBox.CheckBoxStyle();
+        checkBoxStyle.checkboxOff = createDrawable(checkboxOffColor);
+        checkBoxStyle.checkboxOn = createDrawable(checkboxOnColor);
+        checkBoxStyle.font = font;
+        checkBoxStyle.fontColor = fontColor;
+        return checkBoxStyle;
+    }
+
+
 
 }

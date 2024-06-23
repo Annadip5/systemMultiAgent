@@ -1,8 +1,10 @@
 # SoftwareProject
 
 <p align="center">
-  <img src="images/ville.png" alt="Description de l'image">
+  <img src="images/ville.png" alt="Description de l'image" style="height: 300px; width: auto; display: inline-block; margin-right: 2%;">
+  <img src="images/villeDegradation.png" alt="Description de l'image" style="height: 300px; width: auto; display: inline-block;">
 </p>
+
 
 ## Prérequis
 - java JDK 21

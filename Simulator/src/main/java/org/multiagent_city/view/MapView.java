@@ -7,10 +7,7 @@ import org.multiagent_city.environment.Map;
 import org.multiagent_city.model.MapCellUI;
 import org.multiagent_city.nature.Nature;
 import org.multiagent_city.utils.Position;
-import org.multiagent_city.zonestate.InConstructionState;
-import org.multiagent_city.zonestate.LockedState;
-import org.multiagent_city.zonestate.PruningState;
-import org.multiagent_city.zonestate.ZoneState;
+import org.multiagent_city.zonestate.*;
 
 import java.awt.*;
 
@@ -80,9 +77,22 @@ public class MapView implements IObserver {
                 this.uiMap[x][y] = new MapCellUI(infra.getType().getColor(), zoneState.getTexture());
                 return;
             }
+            if(zoneState instanceof Degradedstate){
+                Color initialColor = infra.getType().getColor();
+                Color degradedColor = new Color(93, 70, 61);
+                Color blendedColor = blendColors(initialColor, degradedColor);
+                this.uiMap[x][y] = new MapCellUI(blendedColor, infra.getType().getTexture());
+                return;
+            }
             this.uiMap[x][y] = new MapCellUI(infra.getType().getColor(), infra.getType().getTexture());
         } else {
             this.uiMap[x][y] = new MapCellUI(nature.getColor(), nature.getTexture());
         }
+    }
+    private Color blendColors(Color color1, Color color2) {
+        int red = (color1.getRed() + color2.getRed()) / 2;
+        int green = (color1.getGreen() + color2.getGreen()) / 2;
+        int blue = (color1.getBlue() + color2.getBlue()) / 2;
+        return new Color(red, green, blue);
     }
 }

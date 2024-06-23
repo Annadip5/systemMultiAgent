@@ -188,8 +188,9 @@ public class Map extends Observable{
             }
             ZoneState zoneState = this.zones[infraPos.getX()][infraPos.getY()].getZoneState();
             if(zoneState instanceof BuildedState || zoneState instanceof Degradedstate) {
-                if(infrastructure.getCurrentUsury() < (double) infrastructure.getHealth() / 2 && zoneState instanceof BuildedState) {
+                if(infrastructure.getCurrentUsury() > (double) infrastructure.getHealth() *0.8 && zoneState instanceof BuildedState) {
                     zoneState.nextState(0);
+                    notify(this,infraPos);
                 }
                 if(infrastructure.getCurrentUsury() == infrastructure.getHealth() && zoneState instanceof Degradedstate) {
                     zoneState.nextState(0);
